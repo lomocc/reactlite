@@ -2,29 +2,8 @@
  * Created by Vincent on 2018/8/21.
  */
 import { css } from 'styled-components';
-import { ifNotProp, withProp, switchProp } from 'styled-tools';
 import CSSProps from './CSSProps';
-import {
-  pickHTMLProps,
-  pickCSSProps,
-  parseClassName,
-  getComponentName
-} from './tools';
-
-export const switchBoolProp = valueMap => props => {
-  for (let k in valueMap) {
-    if (props[k]) {
-      return valueMap[k];
-    }
-  }
-  return '';
-};
-
-let ResponsiveMap = {
-  sm: '(min-width: 576px)',
-  md: '(min-width: 768px)',
-  lg: '(min-width: 1312px)'
-};
+import ResponsiveMap from './breakpoints';
 
 const isUnitlessNumber = {
   animationIterationCount: true,
@@ -88,10 +67,10 @@ function dangerousStyleValue(name, value, isCustomProperty) {
 }
 function getStyleContent(styleName, styleValue) {
   if (!CSSProps.hasOwnProperty(styleName)) {
-    return;
+    return '';
   }
   if (typeof styleValue !== 'number' && typeof styleValue !== 'string') {
-    return;
+    return '';
   }
   let isCustomProperty = styleName.indexOf('--') === 0;
 
@@ -122,13 +101,19 @@ export const withResponsiveProp = propsMap => props => {
     let styleContent;
     if (propsMap && propsMap.hasOwnProperty(styleName)) {
       let styleObj = propsMap[styleName](styleValue);
-      styleContent = Object.keys(styleObj).reduce((styleContent, styleName) => {
-        return styleContent + getStyleContent(styleName, styleObj[styleName]);
-      }, '');
+      if (styleObj) {
+        styleContent = Object.keys(styleObj).reduce(
+          (styleContent, styleName) => {
+            return (
+              styleContent + getStyleContent(styleName, styleObj[styleName])
+            );
+          },
+          ''
+        );
+      }
     } else {
       styleContent = getStyleContent(styleName, styleValue);
     }
-
     if (styles[type] == null) {
       styles[type] = '';
     }
@@ -149,50 +134,3 @@ export const withResponsiveProp = propsMap => props => {
   `;
   return cssStyle;
 };
-
-export const responsiveProp = props => {
-  let styles = {};
-  for (let styleFullName in props) {
-    if (!props.hasOwnProperty(styleFullName)) {
-      continue;
-    }
-    let styleValue = props[styleFullName];
-    if (typeof styleValue === 'object') {
-      continue;
-    }
-    let type = styleFullName.slice(0, 2);
-    let styleName;
-    if (ResponsiveMap[type]) {
-      styleName = styleFullName.slice(2).replace(/^(\w)/, v => v.toLowerCase());
-    } else {
-      styleName = styleFullName;
-      type = '';
-    }
-    if (!CSSProps.hasOwnProperty(styleName)) {
-      continue;
-    }
-    let isCustomProperty = styleName.indexOf('--') === 0;
-    if (styles[type] == null) {
-      styles[type] = '';
-    }
-    styles[type] += `  ${CSSProps[styleName]}: ${dangerousStyleValue(
-      styleName,
-      styleValue,
-      isCustomProperty
-    )};\n`;
-  }
-  let cssString = '';
-  for (let type in styles) {
-    if (type === '') {
-      cssString += `{\n${styles[type]}}\n`;
-    } else {
-      cssString += `@media ${ResponsiveMap[type]} {\n${styles[type]}}\n`;
-    }
-  }
-  let cssStyle = css`
-    ${cssString};
-  `;
-  return cssStyle;
-};
-
-export const withResponsiveProp2 = name => withProp(name, responsiveProp);

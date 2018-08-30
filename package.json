@@ -63,5 +63,9 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "styled-components": "^3.4.5",
+    "styled-tools": "^1.4.1"
+  }
 }

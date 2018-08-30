@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
-import { Box, Button, Button2 } from 'reactlite';
-import { css } from 'styled-components';
+import { Box, Button } from 'reactlite';
 
 export default class App extends Component {
   render() {
@@ -45,6 +44,7 @@ export default class App extends Component {
           mdColor="green"
           lgColor="orange"
           shape="rounded"
+          mouseEnabled={false}
         >
           Box flex relative111 1
         </Box>
@@ -54,6 +54,7 @@ export default class App extends Component {
             shape="pill"
             backgroundColor="#f00"
             aspectRatio={1}
+            mdAspectRatio={10}
           >
             AAA
           </Box>
@@ -61,10 +62,15 @@ export default class App extends Component {
             column={8 / 12}
             mdColumn={1 / 12}
             onClick={() => console.log('onClick')}
+            mouseEnabled={false}
           >
             Button2
           </Button>
-          <Button column={3 / 12} shape="pill">
+          <Button
+            column={3 / 12}
+            shape="pill"
+            onClick={() => console.log('onClick')}
+          >
             Button
           </Button>
         </Box>

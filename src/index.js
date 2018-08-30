@@ -1,4 +1,5 @@
 import Box from './Box';
 import Button from './Button';
+import Layer from './Layer';
 
-export { Box, Button };
+export { Box, Button, Layer };
