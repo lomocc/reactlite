@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  pickHTMLProps,
-  pickCSSProps,
-  parseClassName,
-  getComponentName
-} from './tools';
+import { pickHTMLProps, parseClassName, getComponentName } from './tools';
 import { isStyledComponent } from 'styled-components';
 
 function As({ nextAs, ...props }) {

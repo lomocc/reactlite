@@ -82,6 +82,7 @@ function getStyleContent(styleName, styleValue) {
 }
 export const withResponsiveProp = propsMap => props => {
   let styles = {};
+  let stylesImportant = {};
   for (let styleFullName in props) {
     if (!props.hasOwnProperty(styleFullName)) {
       continue;
@@ -98,6 +99,7 @@ export const withResponsiveProp = propsMap => props => {
       styleName = styleFullName;
       type = '';
     }
+    let isInlineStyle = false;
     let styleContent;
     if (propsMap && propsMap.hasOwnProperty(styleName)) {
       let styleObj = propsMap[styleName](styleValue);
@@ -112,13 +114,15 @@ export const withResponsiveProp = propsMap => props => {
         );
       }
     } else {
+      isInlineStyle = true;
       styleContent = getStyleContent(styleName, styleValue);
     }
-    if (styles[type] == null) {
-      styles[type] = '';
+    let container = isInlineStyle ? stylesImportant : styles;
+    if (container[type] == null) {
+      container[type] = '';
     }
     if (styleContent) {
-      styles[type] += styleContent;
+      container[type] += styleContent;
     }
   }
   let cssString = '';
@@ -129,8 +133,23 @@ export const withResponsiveProp = propsMap => props => {
       cssString += `@media ${ResponsiveMap[type]} {\n${styles[type]}}\n`;
     }
   }
+  let cssStringImportant = '';
+  for (let type in stylesImportant) {
+    if (type === '') {
+      cssStringImportant += `{\n${stylesImportant[type]}}\n`;
+    } else {
+      cssStringImportant += `@media ${ResponsiveMap[type]} {\n${
+        stylesImportant[type]
+      }}\n`;
+    }
+  }
   let cssStyle = css`
-    ${cssString};
+    &&& {
+      ${cssString};
+    }
+    &&&& {
+      ${cssStringImportant};
+    }
   `;
   return cssStyle;
 };

@@ -1,80 +1,83 @@
+/**
+ * Created by Vincent on 2018/8/6.
+ */
+
 import React, { Component } from 'react';
-
-import { Box, Button } from 'reactlite';
-
-export default class App extends Component {
+import { Box, Text, Button } from 'reactlite';
+class Demo extends Component {
   render() {
     return (
-      <div>
-        {/* <Box
-          id="box-12345"
-          ref={ref => {
-            console.log('ref', ref);
-          }}
-          flexbox
-          relative
-          width={400}
-          // column={7 / 12}
-          color="red"
-          backgroundColor={'#f90'}
-          justifyContent="center"
-        >
-          Box flex relative
-        </Box> */}
-        <Box
-          theme={{
-            Box: {
-              color: '#66f',
-              backgroundColor: '#e0f',
-              mdBackgroundColor: '#ff0'
-            }
-          }}
-          aspectRatio={10}
-          flexWrap="wrap"
-          mdFlexWrap="wrap-reverse"
-          margin={10}
-          mdMargin={20}
-          lgMargin={40}
-          fontSize={12}
-          smFontSize={16}
-          mdFontSize={20}
-          lgFontSize={30}
-          flex="1 1 auto"
-          mdFlex="1 1 auto"
-          mdColor="green"
-          lgColor="orange"
-          shape="rounded"
-          mouseEnabled={false}
-        >
-          Box flex relative111 1
-        </Box>
-        <Box display="flex" flex="1 1 auto">
-          <Box
-            column={5 / 12}
-            shape="pill"
-            backgroundColor="#f00"
-            aspectRatio={1}
-            mdAspectRatio={10}
-          >
-            AAA
+      <Box>
+        <Box>
+          <Box display="flex" flexDirection="column">
+            {new Array(9).fill(0).map((_, index) => (
+              <Text size={100 * (index + 1)}>
+                测试文字 size=
+                {100 * (index + 1)}
+              </Text>
+            ))}
           </Box>
-          <Button
-            column={8 / 12}
-            mdColumn={1 / 12}
-            onClick={() => console.log('onClick')}
-            mouseEnabled={false}
-          >
-            Button2
-          </Button>
-          <Button
-            column={3 / 12}
-            shape="pill"
-            onClick={() => console.log('onClick')}
-          >
-            Button
-          </Button>
+          <Box backgroundColor="#eee">
+            {new Array(9).fill(0).map((_, index) => (
+              <Button
+                size={100 * (index + 1)}
+                backgroundColor={
+                  '#' +
+                  Math.random()
+                    .toString(16)
+                    .substr(2, 6)
+                }
+              >
+                测试按钮 size=
+                {100 * (index + 1)}
+              </Button>
+            ))}
+          </Box>
+          <Box backgroundColor="#235">
+            <Button
+              size={500}
+              width={160}
+              height={160}
+              shape="circle"
+              backgroundColor={
+                '#' +
+                Math.random()
+                  .toString(16)
+                  .substr(2, 6)
+              }
+            >
+              circle
+            </Button>
+            {[
+              'square',
+              'rounded',
+              'pill',
+              'roundedTop',
+              'roundedBottom',
+              'roundedLeft',
+              'roundedRight'
+            ].map((shape, index) => (
+              <Button
+                margin={4}
+                size={500}
+                inline
+                shape={shape}
+                backgroundColor={
+                  '#' +
+                  Math.random()
+                    .toString(16)
+                    .substr(2, 6)
+                }
+              >
+                测试按钮 shape=
+                {shape}
+              </Button>
+            ))}
+          </Box>
         </Box>
-      </div>
+      </Box>
     );
   }
 }
+
+export default Demo;
