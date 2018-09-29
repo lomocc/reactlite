@@ -19,6 +19,7 @@ export default class Layer extends React.Component {
       container.dataset.layerRoot = '';
       Layer.__layerRootContainer = container;
     }
+    return Layer.__layerRootContainer;
   }
   static set layerRootContainer(container) {
     Layer.__layerRootContainer = container;
