@@ -11,8 +11,8 @@ class Demo extends Component {
     return (
       <Box>
         <LayerExample />
-        <Layer />
-        <ReviewExample />
+        <Layer.Placeholder />
+        {/* <ReviewExample /> */}
       </Box>
     );
   }

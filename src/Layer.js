@@ -5,24 +5,28 @@ import ReactDOM from 'react-dom';
  * 层组件
  *
  * in App:
- * <Layer name="layerName"/>
+ * <Layer.Placeholder name="layerName"/>
  *
  * let ref = Layer.addElement('layerName', <Tooltip>);
  * Layer.removeElement(ref);
  */
 const __layerMap = new Map();
+const __defaultName = 'default';
 function getLayer(name) {
-  return __layerMap.get(name || null);
+  return __layerMap.get(name);
 }
 function addLayer(name, layer) {
-  __layerMap.set(name || null, layer);
+  if (__layerMap.has(name)) {
+    console.warn(`[Layer] 重复的 name: ${name}`);
+  }
+  __layerMap.set(name, layer);
 }
 function removeLayer(name) {
-  __layerMap.delete(name || null);
+  __layerMap.delete(name);
 }
 function addElement() {
   const [name, elementOrType, props, ...elementChildren] = arguments;
-  if (name == null || typeof name === 'string') {
+  if (typeof name === 'string') {
     const layer = getLayer(name);
     const ref = React.createRef();
     layer.setState(({ children }) => {
@@ -40,13 +44,13 @@ function addElement() {
     });
     return ref;
   } else {
-    return addElement(null, ...arguments);
+    return addElement(__defaultName, ...arguments);
   }
 }
 
 function removeElement() {
   const [name, refOrCurrent] = arguments;
-  if (name == null || typeof name === 'string') {
+  if (typeof name === 'string') {
     const layer = getLayer(name);
     layer.setState(({ children }) => ({
       children: children.filter(
@@ -55,42 +59,52 @@ function removeElement() {
       )
     }));
   } else {
-    removeElement(null, ...arguments);
+    removeElement(__defaultName, ...arguments);
   }
 }
-
-export default class Layer extends React.Component {
-  static addElement = addElement;
-
-  static removeElement = removeElement;
-
+class Layer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { children: [] };
     this.el = document.createElement('div');
   }
-
   componentDidMount() {
     if (document.body) {
       document.body.appendChild(this.el);
     }
-    let { name } = this.props;
-    addLayer(name, this);
   }
-
   componentWillUnmount() {
     if (document.body) {
       document.body.removeChild(this.el);
     }
+  }
+  el;
+  render() {
+    const { children } = this.props;
+    return ReactDOM.createPortal(children, this.el);
+  }
+}
+class Placeholder extends React.Component {
+  static defaultProps = {
+    name: __defaultName
+  };
+  constructor(props) {
+    super(props);
+    this.state = { children: [] };
+  }
+  componentDidMount() {
+    let { name } = this.props;
+    addLayer(name, this);
+  }
+  componentWillUnmount() {
     let { name } = this.props;
     removeLayer(name);
   }
-
-  el;
-
   render() {
-    const { children } = this.props;
-    const { children: stateChildren } = this.state;
-    return ReactDOM.createPortal(children || stateChildren, this.el);
+    const { children } = this.state;
+    return <Layer children={children} />;
   }
 }
+Layer.addElement = addElement;
+Layer.removeElement = removeElement;
+Layer.Placeholder = Placeholder;
+export default Layer;
