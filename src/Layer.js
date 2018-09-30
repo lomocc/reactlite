@@ -30,7 +30,13 @@ function removeLayer(name) {
 }
 const __elementMap = new Map();
 let __elementKey = 0;
-
+function isMounted(name, element) {
+  if (typeof name === 'string') {
+    return __elementMap.has(element);
+  } else {
+    return isMounted(__defaultName, ...arguments);
+  }
+}
 function mount(name, element, onMountCallback, onUnmountCallback) {
   if (typeof name === 'string') {
     const unmountSelf = () => unmount(name, element);
@@ -125,5 +131,6 @@ class Placeholder extends React.Component {
 }
 Layer.mount = mount;
 Layer.unmount = unmount;
+Layer.isMounted = isMounted;
 Layer.Placeholder = Placeholder;
 export default Layer;
