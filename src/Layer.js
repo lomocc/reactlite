@@ -1,60 +1,72 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
 
 /**
  * 层组件
- * let instance = Layer.addElement(<Tooltip>);
- * Layer.removeElement(instance);
+ *
+ * in App:
+ * <Layer name="layerName"/>
+ *
+ * let ref = Layer.addElement('layerName', <Tooltip>);
+ * Layer.removeElement(ref);
  */
+const __layerMap = new Map();
+function getLayer(name) {
+  return __layerMap.get(name || null);
+}
+function addLayer(name, layer) {
+  __layerMap.set(name || null, layer);
+}
+function removeLayer(name) {
+  __layerMap.delete(name || null);
+}
+function addElement() {
+  const [name, elementOrType, props, ...elementChildren] = arguments;
+  if (name == null || typeof name === 'string') {
+    const layer = getLayer(name);
+    const ref = React.createRef();
+    layer.setState(({ children }) => {
+      const key = children.length;
+      const element = React.isValidElement(elementOrType)
+        ? React.cloneElement(elementOrType, { key, ref })
+        : React.createElement(
+            elementOrType,
+            { ...props, key, ref },
+            ...elementChildren
+          );
+      return {
+        children: [...children, element]
+      };
+    });
+    return ref;
+  } else {
+    return addElement(null, ...arguments);
+  }
+}
+
+function removeElement() {
+  const [name, refOrCurrent] = arguments;
+  if (name == null || typeof name === 'string') {
+    const layer = getLayer(name);
+    layer.setState(({ children }) => ({
+      children: children.filter(
+        element =>
+          element.ref !== refOrCurrent && element.ref.current !== refOrCurrent
+      )
+    }));
+  } else {
+    removeElement(null, ...arguments);
+  }
+}
 
 export default class Layer extends React.Component {
-  static __layerRootContainer;
-  static __layerMap = new Map();
-  static get layerRootContainer() {
-    if (!Layer.__layerRootContainer) {
-      const container = document.body.appendChild(
-        document.createElement('div')
-      );
-      container.dataset.layerRoot = '';
-      Layer.__layerRootContainer = container;
-    }
-    return Layer.__layerRootContainer;
-  }
-  static set layerRootContainer(container) {
-    Layer.__layerRootContainer = container;
-  }
-  static addElement(element) {
-    if (element) {
-      const layerRootContainer = Layer.layerRootContainer;
-      const container = layerRootContainer.appendChild(
-        document.createElement('div')
-      );
-      const instance = ReactDOM.render(element, container);
-      Layer.__layerMap.set(instance._reactInternalInstance, container);
-      return instance;
-    }
-  }
+  static addElement = addElement;
 
-  static removeElement(instance) {
-    if (instance && instance._reactInternalInstance) {
-      const container = Layer.__layerMap.get(instance._reactInternalInstance);
-      if (container) {
-        ReactDOM.unmountComponentAtNode(container);
-        if (container.parentNode) {
-          container.parentNode.removeChild(container);
-        }
-        Layer.__layerMap.delete(instance._reactInternalInstance);
-      }
-    }
-  }
-
-  static propTypes = {
-    children: PropTypes.node
-  };
+  static removeElement = removeElement;
 
   constructor(props) {
     super(props);
+    this.state = { children: [] };
     this.el = document.createElement('div');
   }
 
@@ -62,18 +74,23 @@ export default class Layer extends React.Component {
     if (document.body) {
       document.body.appendChild(this.el);
     }
+    let { name } = this.props;
+    addLayer(name, this);
   }
 
   componentWillUnmount() {
     if (document.body) {
       document.body.removeChild(this.el);
     }
+    let { name } = this.props;
+    removeLayer(name);
   }
 
   el;
 
   render() {
     const { children } = this.props;
-    return ReactDOM.createPortal(children, this.el);
+    const { children: stateChildren } = this.state;
+    return ReactDOM.createPortal(children || stateChildren, this.el);
   }
 }
