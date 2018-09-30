@@ -31,7 +31,7 @@ function removeLayer(name) {
 const __elementMap = new Map();
 let __elementKey = 0;
 
-function mount(name, element) {
+function mount(name, element, onMountCallback, onUnmountCallback) {
   if (typeof name === 'string') {
     const unmountSelf = () => unmount(name, element);
     if (!__layerMap.has(name)) {
@@ -41,7 +41,7 @@ function mount(name, element) {
       console.warn(`[Layer] 重复的 element: `, element);
     }
     const ref = React.createRef();
-    __elementMap.set(element, { ref });
+    __elementMap.set(element, { ref, onUnmountCallback });
     const layer = getLayer(name);
 
     let props = {
@@ -51,28 +51,34 @@ function mount(name, element) {
     if (element.key == null) {
       props.key = `layer${__elementKey++}`;
     }
-    layer.setState(({ children }) => ({
-      children: children
-        .filter(element => element.ref !== ref)
-        .concat([React.cloneElement(element, props)])
-    }));
+    layer.setState(
+      ({ children }) => ({
+        children: children
+          .filter(element => element.ref !== ref)
+          .concat([React.cloneElement(element, props)])
+      }),
+      onMountCallback
+    );
     return unmountSelf;
   } else {
-    return mount(__defaultName, name);
+    return mount(__defaultName, ...arguments);
   }
 }
 function unmount(name, element) {
   if (typeof name === 'string') {
     if (__elementMap.has(element)) {
-      const { ref } = __elementMap.get(element);
+      const { ref, onUnmountCallback } = __elementMap.get(element);
       __elementMap.delete(element);
       const layer = getLayer(name);
-      layer.setState(({ children }) => ({
-        children: children.filter(element => element.ref !== ref)
-      }));
+      layer.setState(
+        ({ children }) => ({
+          children: children.filter(element => element.ref !== ref)
+        }),
+        onUnmountCallback
+      );
     }
   } else {
-    unmount(__defaultName, name);
+    unmount(__defaultName, ...arguments);
   }
 }
 class Layer extends React.Component {
