@@ -7,7 +7,9 @@ import { Box, Text, Button, Layer } from 'reactlite';
 
 class Modal extends Component {
   removeSelf = () => {
-    Layer.removeElement(this);
+    console.log('removeSelf');
+    this.props.unmount();
+    // Layer.removeElement(this);
   };
   render() {
     let { title } = this.props;
@@ -32,18 +34,18 @@ class Modal extends Component {
 }
 export default class LayerExample extends Component {
   add = () => {
-    let instance = Layer.addElement(Modal, { title: '定制 Modal title' });
-    console.log('addElement instance', instance);
-    this.instance = instance;
+    this.element = <Modal title="定制 Modal title" />;
+    Layer.mount(this.element);
   };
   remove = () => {
-    console.log('全局移除上一个');
-    Layer.removeElement(this.instance);
-    // console.log('addElement instance', instance);
+    Layer.unmount(this.element);
   };
   render() {
     return (
       <Box>
+        <Layer>
+          <div>Layer Content</div>
+        </Layer>
         <Button onClick={this.add}>add</Button>
         <Button onClick={this.remove}>remove</Button>
       </Box>

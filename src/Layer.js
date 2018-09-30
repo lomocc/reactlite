@@ -4,11 +4,15 @@ import ReactDOM from 'react-dom';
 /**
  * 层组件
  *
- * in App:
- * <Layer.Placeholder name="layerName"/>
+ * 方式 1
+ * showLayer && <Layer><div>Layer Content</div></Layer>
  *
- * let ref = Layer.addElement('layerName', <Tooltip>);
- * Layer.removeElement(ref);
+ * 方式 2
+ * <Layer.Placeholder/>
+ * let element = <Tooltip/>;
+ * Layer.mount(element);
+ * Layer.unmount(element);
+ *
  */
 const __layerMap = new Map();
 const __defaultName = 'default';
@@ -24,42 +28,51 @@ function addLayer(name, layer) {
 function removeLayer(name) {
   __layerMap.delete(name);
 }
-function addElement() {
-  const [name, elementOrType, props, ...elementChildren] = arguments;
+const __elementMap = new Map();
+let __elementKey = 0;
+
+function mount(name, element) {
   if (typeof name === 'string') {
-    const layer = getLayer(name);
+    const unmountSelf = () => unmount(name, element);
+    if (!__layerMap.has(name)) {
+      console.error(`[Layer] 需要先添加 <Layer.Placeholder/>`);
+    }
+    if (__elementMap.has(element)) {
+      console.warn(`[Layer] 重复的 element: `, element);
+    }
     const ref = React.createRef();
-    layer.setState(({ children }) => {
-      const key = children.length;
-      const element = React.isValidElement(elementOrType)
-        ? React.cloneElement(elementOrType, { key, ref })
-        : React.createElement(
-            elementOrType,
-            { ...props, key, ref },
-            ...elementChildren
-          );
-      return {
-        children: [...children, element]
-      };
-    });
-    return ref;
+    __elementMap.set(element, { ref });
+    const layer = getLayer(name);
+
+    let props = {
+      ref,
+      unmount: unmountSelf
+    };
+    if (element.key == null) {
+      props.key = `layer${__elementKey++}`;
+    }
+    layer.setState(({ children }) => ({
+      children: children
+        .filter(element => element.ref !== ref)
+        .concat([React.cloneElement(element, props)])
+    }));
+    return unmountSelf;
   } else {
-    return addElement(__defaultName, ...arguments);
+    return mount(__defaultName, name);
   }
 }
-
-function removeElement() {
-  const [name, refOrCurrent] = arguments;
+function unmount(name, element) {
   if (typeof name === 'string') {
-    const layer = getLayer(name);
-    layer.setState(({ children }) => ({
-      children: children.filter(
-        element =>
-          element.ref !== refOrCurrent && element.ref.current !== refOrCurrent
-      )
-    }));
+    if (__elementMap.has(element)) {
+      const { ref } = __elementMap.get(element);
+      __elementMap.delete(element);
+      const layer = getLayer(name);
+      layer.setState(({ children }) => ({
+        children: children.filter(element => element.ref !== ref)
+      }));
+    }
   } else {
-    removeElement(__defaultName, ...arguments);
+    unmount(__defaultName, name);
   }
 }
 class Layer extends React.Component {
@@ -104,7 +117,7 @@ class Placeholder extends React.Component {
     return <Layer children={children} />;
   }
 }
-Layer.addElement = addElement;
-Layer.removeElement = removeElement;
+Layer.mount = mount;
+Layer.unmount = unmount;
 Layer.Placeholder = Placeholder;
 export default Layer;

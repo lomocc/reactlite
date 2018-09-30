@@ -12,14 +12,90 @@ npm install --save reactlite
 
 ## Usage
 
+### Layer
+
 ```jsx
 import React, { Component } from 'react';
 
-import MyComponent from 'reactlite';
+import { Layer, Text } from 'reactlite';
 
 class Example extends Component {
   render() {
-    return <MyComponent />;
+    let { showLayer } = this.props;
+    return (
+      showLayer && (
+        <Layer>
+          <Text>Layer Content</Text>
+        </Layer>
+      )
+    );
+  }
+}
+```
+
+### 全局 Layer
+
+```jsx
+import React, { Component } from 'react';
+
+import { Box, Button, Text, Layer } from 'reactlite';
+
+class App extends Component {
+  render() {
+    return <Layer.Placeholder />;
+  }
+}
+class Example extends Component {
+  add = () => {
+    this.element = <Text>Layer Content</Text>;
+    Layer.mount(this.element);
+  };
+  remove = () => {
+    Layer.unmount(this.element);
+  };
+  render() {
+    return (
+      <Box>
+        <Button onClick={this.add}>add</Button>
+        <Button onClick={this.remove}>remove</Button>
+      </Box>
+    );
+  }
+}
+```
+
+unmount self
+
+```jsx
+import React, { Component } from 'react';
+
+import { Layer } from 'reactlite';
+
+class App extends Component {
+  render() {
+    return <Layer.Placeholder />;
+  }
+}
+class Modal extends Component {
+  unmount = () => {
+    this.props.unmount();
+  };
+  render() {
+    return (
+      <div>
+        <button onClick={this.unmount}>unmount self</button>
+      </div>
+    );
+  }
+}
+class Example extends Component {
+  add = () => {
+    this.element = <Modal />;
+    Layer.mount(this.element);
+  };
+
+  render() {
+    return <button onClick={this.add}>add</button>;
   }
 }
 ```
