@@ -1,9 +1,9 @@
-import { prop } from 'styled-tools';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withResponsiveProp } from './utils/styledProps';
-import as from './utils/as';
+import { prop } from 'styled-tools';
 import Text from './Text';
+import as from './utils/as';
+import { withResponsiveProp } from './utils/styledProps';
 
 const handleKeyPress = e => {
   if (e.charCode === 32 || e.charCode === 13) {
@@ -91,4 +91,4 @@ Button.propTypes = {
     'roundedRight'
   ])
 };
-export default as('div')(Button);
+export default as('button')(Button);
