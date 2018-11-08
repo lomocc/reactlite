@@ -2,9 +2,10 @@
  * Created by Vincent on 2018/8/21.
  */
 import { css } from 'styled-components';
-import CSSProps from './CSSProps';
 import ResponsiveMap from './breakpoints';
+import CSSProps from './CSSProps';
 
+const mediaQueryRegexp = /^(lg|md|sm)[A-Z]/;
 const isUnitlessNumber = {
   animationIterationCount: true,
   borderImageOutset: true,
@@ -91,9 +92,10 @@ export const withResponsiveProp = propsMap => props => {
     if (typeof styleValue === 'object') {
       continue;
     }
-    let type = styleFullName.slice(0, 2);
+    let type;
     let styleName;
-    if (ResponsiveMap[type]) {
+    if (mediaQueryRegexp.test(styleFullName)) {
+      type = styleFullName.slice(0, 2);
       styleName = styleFullName.slice(2).replace(/^(\w)/, v => v.toLowerCase());
     } else {
       styleName = styleFullName;
@@ -152,4 +154,18 @@ export const withResponsiveProp = propsMap => props => {
     }
   `;
   return cssStyle;
+};
+
+export const omitResponsiveProp = (responsiveProps, props) => {
+  let resultProps = {};
+  for (let styleName in props) {
+    if (
+      !CSSProps[styleName] &&
+      !responsiveProps[styleName] &&
+      !mediaQueryRegexp.test(styleName)
+    ) {
+      resultProps[styleName] = props[styleName];
+    }
+  }
+  return resultProps;
 };

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import State from './State';
-import Box from './Box';
 import Layer from './Layer';
+import State from './State';
+import Tag from './Tag';
 
 export default class extends Component {
   render() {
@@ -9,7 +9,7 @@ export default class extends Component {
     return (
       <State state={{ visible: false }}>
         {({ visible, target }, setState) => (
-          <Box
+          <Tag
             cursor="pointer"
             {...props}
             onMouseOver={event => {
@@ -23,7 +23,7 @@ export default class extends Component {
                 {React.createElement(tooltip, { target, ...tooltipProps })}
               </Layer>
             )}
-          </Box>
+          </Tag>
         )}
       </State>
     );

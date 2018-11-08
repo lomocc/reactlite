@@ -1,12 +1,12 @@
+/* eslint-disable no-param-reassign */
+import hoistNonReactStatics from 'hoist-non-react-statics';
 import React from 'react';
-import { pickHTMLProps, parseClassName, getComponentName } from './tools';
-import { isStyledComponent } from 'styled-components';
+import dedupeClassName from './dedupeClassName';
+import getComponentName from './getComponentName';
+import pickCSSProps from './pickCSSProps';
+import pickHTMLProps from './pickHTMLProps';
 
-function As({ nextAs, ...props }) {
-  return render({ ...props, as: nextAs });
-}
-
-const parseTag = tag => {
+function parseTag(tag) {
   if (Array.isArray(tag)) {
     const tags = tag.filter(
       (currentTag, i) => typeof currentTag !== 'string' || i === tag.length - 1
@@ -14,80 +14,86 @@ const parseTag = tag => {
     return tags.length <= 1 ? tags[0] || 'div' : tags;
   }
   return tag || 'div';
-};
+}
+function toArray(arg) {
+  return Array.isArray(arg) ? arg : [arg];
+}
 
-function render({ as, ...props }) {
-  let Element = parseTag(as);
+function As({ as, nextAs, ...props }) {
+  return render(nextAs, props);
+}
 
-  if (Array.isArray(Element)) {
-    const [First, ...others] = Element.filter(x => x !== As);
-    return <First {...props} as={As} nextAs={others} />;
+function render(as, props) {
+  const T = parseTag(as);
+
+  if (Array.isArray(T)) {
+    const [First, ...others] = T.filter(x => x !== As);
+    const other = others.length === 1 ? others[0] : others;
+    // @ts-ignore: We can't be sure if First accepts `as` or `nextAs`
+    return <First {...props} as={As} nextAs={other} />;
   }
 
-  // const style = pickCSSProps(props);
-  // console.log('style', style);
-  const className = parseClassName(props.className);
+  const style = pickCSSProps(props);
 
-  // if (style) {
-  //   props.style = style;
-  // }
-
-  if (typeof Element === 'string') {
-    const { children } = props;
+  if (typeof T === 'string') {
+    const className = dedupeClassName(props.className);
     const HTMLProps = pickHTMLProps(props);
     return (
-      <Element {...HTMLProps} className={className} ref={props.elementRef}>
-        {children}
-      </Element>
+      <T
+        {...HTMLProps}
+        ref={props.elementRef}
+        className={className}
+        style={style}
+      />
     );
   }
-  return <Element {...props} className={className} />;
+  return <T {...props} style={style} />;
+}
+
+function isAsComponent(target) {
+  return typeof target.asComponents !== 'undefined';
 }
 
 function as(asComponents) {
   return WrappedComponent => {
-    const target = isStyledComponent(WrappedComponent)
-      ? WrappedComponent.target
-      : WrappedComponent;
-
+    // Transform WrappedComponent into ReakitComponent
     const defineProperties = scope => {
-      const xscope = scope;
-      xscope.asComponents = asComponents;
-      xscope.as = otherComponents => as(otherComponents)(scope);
-      return xscope;
+      scope.asComponents = asComponents;
+      // @ts-ignore
+      scope.as = otherComponents => as(otherComponents)(scope);
+      return scope;
     };
 
+    // WrappedComponent was already enhanced with the same arguments
     if (
-      target.asComponents !== undefined &&
-      asComponents === target.asComponents
+      isAsComponent(WrappedComponent) &&
+      asComponents === WrappedComponent.asComponents
     ) {
       return defineProperties(WrappedComponent);
     }
-
-    const getAs = props =>
-      [].concat(
-        WrappedComponent,
-        asComponents,
-        props.as || [],
-        props.nextAs || []
-      );
 
     const componentName = getComponentName(WrappedComponent);
     const commaSeparatedAs = [].concat(asComponents).map(getComponentName);
     const displayName = `${componentName}.as(${commaSeparatedAs})`;
 
-    const EnhancedComponent = props => {
-      return render({ ...props, as: getAs(props) });
-    };
+    const EnhancedComponent = props =>
+      render(
+        [
+          WrappedComponent,
+          ...toArray(asComponents),
+          ...toArray(props.as || []),
+          ...toArray(props.nextAs || [])
+        ],
+        props
+      );
 
     EnhancedComponent.displayName = displayName;
-
-    if (isStyledComponent(WrappedComponent)) {
-      const StyledComponent = EnhancedComponent;
-      StyledComponent.styledComponentId = WrappedComponent.styledComponentId;
-      StyledComponent.target = EnhancedComponent;
-      return defineProperties(StyledComponent);
-    }
+    // @ts-ignore: Only docs
+    EnhancedComponent.propTypes = WrappedComponent.propTypes;
+    // @ts-ignore: Only docs
+    EnhancedComponent.defaultProps = WrappedComponent.defaultProps;
+    // @ts-ignore
+    hoistNonReactStatics(EnhancedComponent, WrappedComponent);
 
     return defineProperties(EnhancedComponent);
   };

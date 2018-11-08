@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
-import { ifProp, prop } from 'styled-tools';
 import styled, { css } from 'styled-components';
+import { ifProp, prop } from 'styled-tools';
+import Tag from './Tag';
 import as from './utils/as';
-import Box from './Box';
 
-const Divider = styled(Box)`
+const Divider = styled(Tag)`
   border: 1px solid currentcolor;
   opacity: 0.2;
 

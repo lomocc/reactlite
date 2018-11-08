@@ -87,6 +87,18 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
+"@emotion/is-prop-valid@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@emotion/is-prop-valid/-/is-prop-valid-0.7.0.tgz#ea730c5e75846faae1e4946253bd1ee87ae0e39e"
+  integrity sha512-0LQ5AOdEvL0xfXT4dNV2gTkadhjh/DnfW8whFePeSYooRi0T1frkFjQ/VlIgeNNz4D/TW/YlJQ/CXuV4HxZrTQ==
+  dependencies:
+    "@emotion/memoize" "^0.7.0"
+
+"@emotion/memoize@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@emotion/memoize/-/memoize-0.7.0.tgz#b4363577017f94a7ab9417f030516c7dad9995d7"
+  integrity sha512-oRzLa0T0ZvZhlpRwNeBq4U5SyFtb8e5kPkoMWtrTMmFoWu8A6xMGQjN2zaka4dA+d9771xGUVQ4uTLJeCurNaQ==
+
 "@types/estree@0.0.39":
   version "0.0.39"
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.39.tgz#e177e699ee1b8c22d23174caaa7422644389509f"
@@ -6618,6 +6630,11 @@ pluralize@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-7.0.0.tgz#298b89df8b93b0221dbf421ad2b1b1ea23fc6777"
   integrity sha512-ARhBOdzS3e41FbkW/XWrTEtukqqLoK5+Z/4UeDaLuSW+39JPeFgs4gCGqsrJHVZX0fUrx//4OF0K1CUGwlIFow==
+
+popper.js@^1.14.4:
+  version "1.14.4"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.14.4.tgz#8eec1d8ff02a5a3a152dd43414a15c7b79fd69b6"
+  integrity sha1-juwdj/AqWjoVLdQ0FKFce3n9abY=
 
 portfinder@^1.0.9:
   version "1.0.17"

@@ -3,16 +3,20 @@
  */
 
 import React, { Component } from 'react';
-import { Box, Text, Button, Layer } from 'reactlite';
-import ReviewExample from './ReviewExample';
+import { Box, Layer } from 'reactlite';
+import Benchmark from './Benchmark';
 import LayerExample from './LayerExample';
+import ReviewExample from './ReviewExample';
+
+console.log('DEMO', Box);
 class Demo extends Component {
   render() {
     return (
       <Box>
         <LayerExample />
         <Layer.Placeholder />
-        {/* <ReviewExample /> */}
+        <ReviewExample />
+        <Benchmark />
       </Box>
     );
   }
