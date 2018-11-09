@@ -14,14 +14,14 @@ const Base = ({ as, ...props }) => {
 };
 
 const Container = styled(Base)`
-  // margin: unset;
-  // padding: unset;
-  // border: unset;
-  // background: unset;
-  // font: unset;
-  // font-family: inherit;
-  // font-size: 100%;
-  // box-sizing: border-box;
+  margin: unset;
+  padding: unset;
+  border: unset;
+  background: unset;
+  font: unset;
+  font-family: inherit;
+  font-size: 100%;
+  box-sizing: border-box;
   ${withProp('theme.Container', withResponsiveProp())};
   ${withResponsiveProp(ExtraCSSProps)};
 `;

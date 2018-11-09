@@ -1,10 +1,18 @@
-import { prop } from 'styled-tools';
+import React from 'react';
 import styled from 'styled-components';
-import { withResponsiveProp } from './utils/styledProps';
-import as from './utils/as';
 import Text from './Text';
+import { parseStyleProps } from './utils/styledProps';
 
-const Input = styled(Text)`
+const propsToStyle = {
+  error: value =>
+    value && {
+      borderColor: 'red'
+    }
+};
+
+const InputBase = styled(Text)`
+  border-color: #8e8e8e;
+  padding: 4px 8px;
   border: 1px solid rgba(0, 0, 0, 0.3);
   display: block;
   width: 100%;
@@ -29,71 +37,17 @@ const Input = styled(Text)`
     height: auto;
     padding: 0;
   }
-  & {
-    ${({ size, error }) => {
-      let cssStyle = withResponsiveProp({
-        error: value =>
-          value && {
-            borderColor: 'red'
-          },
-        size: value =>
-          prop(value)({
-            '900': {
-              fontSize: '20px',
-              lineHeight: '26px',
-              padding: 8
-            },
-            '800': {
-              fontSize: '18px',
-              lineHeight: '24px',
-              padding: 7
-            },
-            '700': {
-              fontSize: '18px',
-              lineHeight: '22px',
-              padding: 6
-            },
-            '600': {
-              fontSize: '16px',
-              lineHeight: '22px',
-              padding: 4
-            },
-            '500': {
-              fontSize: '16px',
-              lineHeight: '20px',
-              padding: 4
-            },
-            '400': {
-              fontSize: '14px',
-              lineHeight: '20px',
-              padding: 3
-            },
-            '300': {
-              fontSize: '14px',
-              lineHeight: '18px',
-              padding: 3
-            },
-            '200': {
-              fontSize: '12px',
-              lineHeight: '18px',
-              padding: 2
-            },
-            '100': {
-              fontSize: '12px',
-              lineHeight: '16px',
-              padding: 2
-            }
-          })
-      })({ size, error });
-      return cssStyle;
-    }};
-  }
-  ${prop('theme.Input')};
 `;
+const Input = props => {
+  const parsedProps = parseStyleProps(props, propsToStyle);
+  return (
+    <InputBase as="input" role="input" className="Input" {...parsedProps} />
+  );
+};
 
 Input.defaultProps = {
   type: 'text',
-  size: '100'
+  shape: 'rounded'
 };
 
-export default as('input')(Input);
+export default Input;

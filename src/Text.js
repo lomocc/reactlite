@@ -2,8 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import Box from './Box';
-import as from './utils/as';
-import { omitResponsiveProp, withResponsiveProp } from './utils/styledProps';
+import { parseStyleProps } from './utils/styledProps';
 
 const sizeStyles = {
   xl: {
@@ -22,7 +21,7 @@ const sizeStyles = {
     fontSize: '1em'
   }
 };
-const responsiveProps = {
+const propsToStyle = {
   italic: value => value && { fontStyle: 'italic' },
   bold: value => value && { fontWeight: 'bold' },
   inline: value => value && { display: 'inline-block' },
@@ -38,17 +37,20 @@ const responsiveProps = {
     },
   size: value => sizeStyles[value]
 };
-const Base = props =>
-  React.createElement(Box, omitResponsiveProp(responsiveProps, props));
 
-const Text = styled(Base)`
+const TextBase = styled(Box)`
   line-height: unset;
   margin: unset;
-  ${withResponsiveProp(responsiveProps)};
 `;
+const Text = props => {
+  const parsedProps = parseStyleProps(props, propsToStyle);
+  return <TextBase as="span" role="text" className="Text" {...parsedProps} />;
+};
+
 Text.defaultProps = {
   size: 'xs'
 };
+
 Text.propTypes = {
   size: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
   italic: PropTypes.bool,
@@ -58,4 +60,4 @@ Text.propTypes = {
   // 省略号
   ellipsis: PropTypes.bool
 };
-export default as('div')(Text);
+export default Text;

@@ -1,10 +1,7 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import { prop } from 'styled-tools';
 import Text from './Text';
-import as from './utils/as';
-import { omitResponsiveProp, withResponsiveProp } from './utils/styledProps';
+import { parseStyleProps } from './utils/styledProps';
 
 const handleKeyPress = e => {
   if (e.charCode === 32 || e.charCode === 13) {
@@ -12,12 +9,10 @@ const handleKeyPress = e => {
     e.target.click();
   }
 };
-const responsiveProps = {
+const propsToStyle = {
   inline: value => !value && { width: '100%' }
 };
-const Base = props =>
-  React.createElement(Text, omitResponsiveProp(responsiveProps, props));
-const Button = styled(Base)`
+const ButtonBase = styled(Text)`
   border: unset;
   display: inline-flex;
   position: relative;
@@ -66,27 +61,18 @@ const Button = styled(Base)`
     grid-auto-flow: column;
     align-content: center;
   }
-  ${prop('theme.Button')};
-  ${withResponsiveProp(responsiveProps)};
 `;
 
+const Button = props => {
+  const parsedProps = parseStyleProps(props, propsToStyle);
+  return (
+    <ButtonBase as="button" role="button" className="Button" {...parsedProps} />
+  );
+};
 Button.defaultProps = {
-  role: 'button',
   tabIndex: 0,
   onKeyPress: handleKeyPress,
   shape: 'rounded',
   inline: true
 };
-Button.propTypes = {
-  shape: PropTypes.oneOf([
-    'square',
-    'rounded',
-    'pill',
-    'circle',
-    'roundedTop',
-    'roundedBottom',
-    'roundedLeft',
-    'roundedRight'
-  ])
-};
-export default as('button')(Button);
+export default Button;

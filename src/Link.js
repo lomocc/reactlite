@@ -1,33 +1,62 @@
-import { withProp, prop } from 'styled-tools';
 import color from 'color';
-import styled, { css } from 'styled-components';
-import as from './utils/as';
+import React from 'react';
+import styled from 'styled-components';
 import Text from './Text';
+import { parseStyleProps } from './utils/styledProps';
 
-const Link = styled(Text)`
+const LinkBase = styled(Text)`
   white-space: nowrap;
   text-decoration: none;
-  color: inherit;
-  &&& {
-    ${withProp('color', value => {
-      return (
-        value &&
-        css`
-          :link,
-          :visited,
-          :focus {
-            color: ${value};
-          }
-          :hover {
-            color: ${color(value)
-              .darken(0.3)
-              .string()};
-          }
-        `
-      );
-    })};
-  }
-  ${prop('theme.Link')};
 `;
+class Link extends React.Component {
+  state = {
+    hovered: false
+  };
 
-export default as('a')(Link);
+  handleMouseEnter = () => {
+    this.setState({ hovered: true });
+  };
+
+  handleMouseLeave = () => {
+    this.setState({ hovered: false });
+  };
+
+  render() {
+    const { hovered } = this.state;
+    const propsToStyle = {
+      color: value => {
+        if (hovered) {
+          let originColor = color(value);
+          let hoveredColor = originColor.isDark()
+            ? originColor
+                .lighten(0.5)
+                .hex()
+                .toString()
+            : originColor
+                .darken(0.5)
+                .hex()
+                .toString();
+          return { color: hoveredColor };
+        } else {
+          return { color: value };
+        }
+      }
+    };
+    const parsedProps = parseStyleProps(this.props, propsToStyle);
+    return (
+      <LinkBase
+        as="a"
+        role="link"
+        className="Link"
+        {...parsedProps}
+        onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave}
+      />
+    );
+  }
+}
+
+Link.defaultProps = {
+  color: 'black'
+};
+export default Link;

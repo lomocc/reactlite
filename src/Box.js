@@ -21,7 +21,6 @@ const mapStyleProps = ({ style, ...props }) => {
 };
 
 const Box = ({ as = 'div', ...props }) => {
-  console.log('Box', props, mapStyleProps(props));
   return React.createElement(as, mapStyleProps(props));
 };
 

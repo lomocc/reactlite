@@ -3,21 +3,18 @@
  */
 
 import React, { Component } from 'react';
-import { Box, Button, Popover, Text } from 'reactlite';
-console.log('DEMO1');
+import { Box, Button, Input, Link, Popover, Text } from 'reactlite';
 class Demo extends Component {
   render() {
-    console.log('DEMO2');
     return (
       <Box>
         <Box
           title="base"
           data-aa="aaa"
-          aspectRatio={1}
           backgroundColor="#f90"
           style={{ backgroundColor: '#f00', fontSize: 54 }}
         >
-          Box
+          <Link color="#f90">Link</Link>
         </Box>
         <Box height={400} backgroundColor="#eee">
           <Popover content="Popover1 content" placement="bottom">
@@ -33,6 +30,35 @@ class Demo extends Component {
           </Popover>
         </Box>
         <Box>
+          <Box backgroundColor="#eee">
+            {['xs', 'sm', 'md', 'lg', 'xl'].map((size, index) => (
+              <Input
+                size={size}
+                color={
+                  '#' +
+                  Math.random()
+                    .toString(16)
+                    .substr(2, 6)
+                }
+              />
+            ))}
+          </Box>
+          <Box backgroundColor="#eee">
+            {['xs', 'sm', 'md', 'lg', 'xl'].map((size, index) => (
+              <Link
+                size={size}
+                href="#"
+                color={
+                  '#' +
+                  Math.random()
+                    .toString(16)
+                    .substr(2, 6)
+                }
+              >
+                测试按钮 size={size}
+              </Link>
+            ))}
+          </Box>
           <Box display="flex" flexDirection="column">
             {['xs', 'sm', 'md', 'lg', 'xl'].map((size, index) => (
               <Text size={size}>测试文字 size={size}</Text>
@@ -62,7 +88,6 @@ class Demo extends Component {
           </Box>
           <Box backgroundColor="#235">
             <Button
-              size={500}
               width={160}
               height={160}
               shape="circle"
