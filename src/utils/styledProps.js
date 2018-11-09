@@ -159,11 +159,7 @@ export const withResponsiveProp = propsMap => props => {
 export const omitResponsiveProp = (responsiveProps, props) => {
   let resultProps = {};
   for (let styleName in props) {
-    if (
-      !CSSProps[styleName] &&
-      !responsiveProps[styleName] &&
-      !mediaQueryRegexp.test(styleName)
-    ) {
+    if (!responsiveProps[styleName] && !mediaQueryRegexp.test(styleName)) {
       resultProps[styleName] = props[styleName];
     }
   }

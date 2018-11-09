@@ -33,7 +33,7 @@ function render(as, props) {
     return <First {...props} as={As} nextAs={other} />;
   }
 
-  const style = pickCSSProps(props);
+  const style = Object.assign({}, pickCSSProps(props), props.style);
 
   if (typeof T === 'string') {
     const className = dedupeClassName(props.className);

@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
+import React from 'react';
 import styled from 'styled-components';
 import { prop } from 'styled-tools';
 import Text from './Text';
 import as from './utils/as';
-import { withResponsiveProp } from './utils/styledProps';
+import { omitResponsiveProp, withResponsiveProp } from './utils/styledProps';
 
 const handleKeyPress = e => {
   if (e.charCode === 32 || e.charCode === 13) {
@@ -11,23 +12,27 @@ const handleKeyPress = e => {
     e.target.click();
   }
 };
-
-const Button = styled(Text)`
-  text-align: center;
+const responsiveProps = {
+  inline: value => !value && { width: '100%' }
+};
+const Base = props =>
+  React.createElement(Text, omitResponsiveProp(responsiveProps, props));
+const Button = styled(Base)`
+  border: unset;
   display: inline-flex;
   position: relative;
   appearance: none;
-  user-select: none;
-  outline: none;
   align-items: center;
-  white-space: nowrap;
   justify-content: center;
-  text-decoration: none;
-  color: inherit;
   cursor: pointer;
-  min-width: 2.5em;
-  padding: 0.5em 1em;
-  line-height: unset;
+  min-width: 2em;
+  height: 2em;
+  padding: 0 0.68em;
+  flex: none;
+  user-select: none;
+  white-space: nowrap;
+  text-decoration: none;
+  outline: none;
   &:hover,
   &:focus {
     box-shadow: inset 0 0 999em rgba(0, 0, 0, 0.1);
@@ -61,23 +66,16 @@ const Button = styled(Text)`
     grid-auto-flow: column;
     align-content: center;
   }
-  & {
-    ${({ inline }) => {
-      let cssStyle = withResponsiveProp({
-        inline: value => !value && { width: '100%' }
-      })({ inline });
-      return cssStyle;
-    }};
-  }
   ${prop('theme.Button')};
+  ${withResponsiveProp(responsiveProps)};
 `;
 
 Button.defaultProps = {
   role: 'button',
   tabIndex: 0,
   onKeyPress: handleKeyPress,
-  size: 100,
-  inline: false
+  shape: 'rounded',
+  inline: true
 };
 Button.propTypes = {
   shape: PropTypes.oneOf([

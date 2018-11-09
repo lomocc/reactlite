@@ -12,12 +12,16 @@ console.log('DEMO', Box);
 class Demo extends Component {
   render() {
     return (
-      <Box>
-        <LayerExample />
-        <Layer.Placeholder />
-        <ReviewExample />
-        <Benchmark />
-      </Box>
+      <div>
+        111
+        <Box>
+          <div>div</div>
+          <LayerExample />
+          <Layer.Placeholder />
+          <ReviewExample />
+          <Benchmark />
+        </Box>
+      </div>
     );
   }
 }

@@ -1,4 +1,4 @@
-const borderRadius = '6px';
+const borderRadius = '0.25em';
 const shapeStyles = {
   square: { borderRadius: 0 },
   circle: { borderRadius: '50%' },
@@ -82,6 +82,6 @@ const ExtraCSSProps = {
   }),
   visible: value => !value && { display: 'none' },
   mouseEnabled: value => !value && { pointerEvents: 'none' },
-  shape: value => prop(value)(shapeStyles)
+  shape: value => shapeStyles[value]
 };
 export default ExtraCSSProps;
