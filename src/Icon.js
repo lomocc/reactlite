@@ -1,6 +1,6 @@
 import React from 'react';
 import { withTheme } from 'styled-components';
-import Tag from './Tag';
+import Box from './Box';
 
 /**
  * 图标组件
@@ -25,7 +25,7 @@ class Icon extends React.Component {
     if (icon) {
       path = path || theme.IconPaths[icon];
       return (
-        <Tag
+        <Box
           as="svg"
           role="img"
           height={size}
@@ -37,11 +37,11 @@ class Icon extends React.Component {
           {...props}
         >
           <path d={path} />
-        </Tag>
+        </Box>
       );
     } else if (src) {
       return (
-        <Tag
+        <Box
           as="img"
           role="img"
           height={size}
@@ -51,7 +51,7 @@ class Icon extends React.Component {
         />
       );
     } else {
-      return <Tag role="img" height={size} width={size} {...props} />;
+      return <Box role="img" height={size} width={size} {...props} />;
     }
   }
 }

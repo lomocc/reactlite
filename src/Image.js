@@ -1,5 +1,5 @@
 import React from 'react';
-import Tag from './Tag';
+import Box from './Box';
 
 class Image extends React.Component {
   render() {
@@ -14,7 +14,7 @@ class Image extends React.Component {
       ...others
     } = this.props;
     return (
-      <Tag
+      <Box
         role="img"
         width="100%"
         height="100%"
@@ -26,7 +26,7 @@ class Image extends React.Component {
         backgroundImage={`url('${src}')`}
       >
         {children}
-      </Tag>
+      </Box>
     );
   }
 }

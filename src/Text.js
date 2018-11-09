@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import { prop } from 'styled-tools';
-import Tag from './Tag';
+import Box from './Box';
 import as from './utils/as';
 import { omitResponsiveProp, withResponsiveProp } from './utils/styledProps';
 
@@ -61,7 +61,7 @@ const responsiveProps = {
     })
 };
 const Base = props =>
-  React.createElement(Tag, omitResponsiveProp(responsiveProps, props));
+  React.createElement(Box, omitResponsiveProp(responsiveProps, props));
 
 const Text = styled(Base)`
   ${withResponsiveProp(responsiveProps)};

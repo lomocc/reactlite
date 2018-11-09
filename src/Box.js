@@ -1,35 +1,26 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import styled from 'styled-components';
-import { withProp } from 'styled-tools';
-import as from './utils/as';
+import CSSProps from './utils/CSSProps';
 import ExtraCSSProps from './utils/ExtraCSSProps';
-import { omitResponsiveProp, withResponsiveProp } from './utils/styledProps';
 
-const Base = ({ as, ...props }) => {
-  return React.createElement(as, omitResponsiveProp(ExtraCSSProps, props));
+const mapStyleProps = (styleProps, { style, ...props }) => {
+  const newStyle = {};
+  const newProps = {};
+  for (let name in props) {
+    let value = props[name];
+
+    if (styleProps[name]) {
+      Object.assign(newStyle, styleProps[name](value));
+    } else if (CSSProps[name]) {
+      Object.assign(newStyle, { [name]: value });
+    } else {
+      Object.assign(newProps, { [name]: value });
+    }
+  }
+  newProps.style = Object.assign(newStyle, style);
+  return newProps;
 };
 
-const Box = styled(Base)`
-  margin: unset;
-  padding: unset;
-  border: unset;
-  background: unset;
-  font: unset;
-  font-family: inherit;
-  font-size: 100%;
-  box-sizing: border-box;
-  ${withProp('theme.Box', withResponsiveProp())};
-  ${withResponsiveProp(ExtraCSSProps)};
-`;
+const Box = ({ as = 'div', ...props }) =>
+  React.createElement(as, mapStyleProps(ExtraCSSProps, props));
 
-const asTypes = [PropTypes.func, PropTypes.string];
-
-Box.propTypes = {
-  as: PropTypes.oneOfType([
-    ...asTypes,
-    PropTypes.arrayOf(PropTypes.oneOfType(asTypes))
-  ])
-};
-
-export default as('div')(Box);
+export default Box;

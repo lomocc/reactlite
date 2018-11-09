@@ -1,5 +1,6 @@
 import Box from './Box';
 import Button from './Button';
+import Container from './Container';
 import Divider from './Divider';
 import Icon from './Icon';
 import Image from './Image';
@@ -8,12 +9,11 @@ import Layer from './Layer';
 import Link from './Link';
 import Popover from './Popover';
 import State from './State';
-import Tag from './Tag';
 import Text from './Text';
 
 export {
-  Tag,
   Box,
+  Container,
   Button,
   Image,
   Divider,
