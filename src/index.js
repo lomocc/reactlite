@@ -10,6 +10,7 @@ import Link from './Link';
 import Popover from './Popover';
 import State from './State';
 import Text from './Text';
+import Tooltip from './Tooltip';
 
 export {
   Box,
@@ -23,5 +24,6 @@ export {
   Input,
   Icon,
   State,
-  Popover
+  Popover,
+  Tooltip
 };
