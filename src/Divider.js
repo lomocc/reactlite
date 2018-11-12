@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import Box from './Box';
-import { parseStyleProps } from './utils/styledProps';
+import parseStyleProps from './utils/parseStyleProps';
 
 const propsToStyle = {
   vertical: value =>

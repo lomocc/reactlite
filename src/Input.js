@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Text from './Text';
-import { parseStyleProps } from './utils/styledProps';
+import parseStyleProps from './utils/parseStyleProps';
 
 const propsToStyle = {
   error: value =>

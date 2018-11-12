@@ -2,7 +2,7 @@ import color from 'color';
 import React from 'react';
 import styled from 'styled-components';
 import Text from './Text';
-import { parseStyleProps } from './utils/styledProps';
+import parseStyleProps from './utils/parseStyleProps';
 
 const LinkBase = styled(Text)`
   white-space: nowrap;

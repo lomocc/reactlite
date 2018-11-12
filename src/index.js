@@ -11,8 +11,20 @@ import Popover from './Popover';
 import State from './State';
 import Text from './Text';
 import Tooltip from './Tooltip';
+import as from './utils/as';
+import dedupeClassName from './utils/dedupeClassName';
+import getComponentName from './utils/getComponentName';
+import parseStyleProps from './utils/parseStyleProps';
+import pickCSSProps from './utils/pickCSSProps';
+import pickHTMLProps from './utils/pickHTMLProps';
 
 export {
+  as,
+  getComponentName,
+  pickHTMLProps,
+  pickCSSProps,
+  dedupeClassName,
+  parseStyleProps,
   Box,
   Container,
   Button,
