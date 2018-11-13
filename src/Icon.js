@@ -1,36 +1,49 @@
 import React from 'react';
-import { withTheme } from 'styled-components';
 import Box from './Box';
 
 /**
  * 图标组件
  */
 class Icon extends React.Component {
+  static defaultProps = {
+    path: 'M0 0L1024 0L1024 1024L0 1024z'
+  };
   render() {
     let {
       src,
-      icon,
-      size,
       width,
       height,
-      theme,
       path,
-      sourceSize = 1024,
+      sourceWidth,
+      sourceHeight,
       ...props
     } = this.props;
-    if (!theme.IconPaths) {
-      console.warn('要使用 Icon 必须设置 theme.IconPaths');
-    }
-    size = size || width || height || 16;
-    if (icon) {
-      path = path || theme.IconPaths[icon];
+
+    const iconWidth = width || height || 16;
+    const iconHeight = height || width || 16;
+
+    const iconSourceWidth = sourceWidth || sourceHeight || 1024;
+    const iconSourceHeight = sourceHeight || sourceWidth || 1024;
+
+    if (src) {
+      return (
+        <Box
+          as="img"
+          role="img"
+          width={iconWidth}
+          height={iconHeight}
+          {...props}
+          src={src}
+        />
+      );
+    } else {
       return (
         <Box
           as="svg"
           role="img"
-          height={size}
-          width={size}
-          viewBox={`0 0 ${sourceSize} ${sourceSize}`}
+          width={iconWidth}
+          height={iconHeight}
+          viewBox={`0 0 ${iconSourceWidth} ${iconSourceHeight}`}
           fill="currentColor"
           strokeWidth={0}
           verticalAlign="middle"
@@ -39,20 +52,7 @@ class Icon extends React.Component {
           <path d={path} />
         </Box>
       );
-    } else if (src) {
-      return (
-        <Box
-          as="img"
-          role="img"
-          height={size}
-          width={size}
-          {...props}
-          src={src}
-        />
-      );
-    } else {
-      return <Box role="img" height={size} width={size} {...props} />;
     }
   }
 }
-export default withTheme(Icon);
+export default Icon;

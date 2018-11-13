@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import { Box, Divider, Layer, Link } from 'reactlite';
+import { Box, Divider, Icon, Layer, Link } from 'reactlite';
 import Benchmark from './Benchmark';
 import LayerExample from './LayerExample';
 import ReviewExample from './ReviewExample';
@@ -13,6 +13,8 @@ class Demo extends Component {
     return (
       <div>
         <Box paddingX={4} display="flex">
+          <Icon />
+          <Icon src="https://developer.mozilla.org/static/arrows/chevron-right.3b8652b57659.svg" />
           <Link href="www.google.com" margin={4}>
             LinkLink
           </Link>
