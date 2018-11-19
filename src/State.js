@@ -9,10 +9,45 @@ export default class State extends React.Component {
     this.setStateBond = (_, cb) => {
       this.setState(_, cb);
     };
+    const {
+      componentDidMount,
+      componentDidUpdate,
+      componentWillUnmount
+    } = this.props;
+    if (componentDidMount) {
+      this.componentDidMount = () =>
+        componentDidMount({
+          props: this.props,
+          state: this.state,
+          setState: this.setStateBond
+        });
+    }
+    if (componentDidUpdate) {
+      this.componentDidUpdate = (prevProps, prevState) =>
+        componentDidUpdate({
+          prevProps,
+          prevState,
+          props: this.props,
+          state: this.state,
+          setState: this.setStateBond
+        });
+    }
+
+    if (componentWillUnmount) {
+      this.componentWillUnmount = () =>
+        componentWillUnmount({
+          props: this.props,
+          state: this.state,
+          setState: this.setStateBond
+        });
+    }
   }
   render() {
     const { children } = this.props;
-    if (typeof children !== 'function') return null;
-    return children(this.state, this.setStateBond);
+    return React.createElement(children, {
+      props: this.props,
+      state: this.state,
+      setState: this.setStateBond
+    });
   }
 }

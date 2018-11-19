@@ -1,31 +1,31 @@
-import React, { Component } from 'react';
-import Box from './Box';
-import Layer from './Layer';
-import State from './State';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Tooltip from 'tooltip.js';
 
-export default class extends Component {
+export default class extends React.Component {
+  triggerRef = React.createRef();
+  static defaultProps = {
+    placement: 'auto',
+    trigger: 'hover'
+  };
+  componentDidMount() {
+    let { placement, trigger, content } = this.props;
+    console.log('componentDidMount', this);
+    const target = ReactDOM.findDOMNode(this.triggerRef.current);
+    this.tooltip = new Tooltip(target, {
+      placement,
+      trigger,
+      title: content
+    });
+  }
+  componentWillUnmount() {
+    if (this.tooltip) {
+      this.tooltip.dispose();
+      this.tooltip = null;
+    }
+  }
   render() {
-    const { children, tooltip, tooltipProps, ...props } = this.props;
-    return (
-      <State state={{ visible: false }}>
-        {({ visible, target }, setState) => (
-          <Box
-            cursor="pointer"
-            {...props}
-            onMouseOver={event => {
-              setState({ visible: true, target: event.target });
-            }}
-            onMouseOut={() => setState({ visible: false })}
-          >
-            {children}
-            {visible && (
-              <Layer>
-                {React.createElement(tooltip, { target, ...tooltipProps })}
-              </Layer>
-            )}
-          </Box>
-        )}
-      </State>
-    );
+    const { children } = this.props;
+    return React.cloneElement(children, { ref: this.triggerRef });
   }
 }

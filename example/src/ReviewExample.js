@@ -3,25 +3,82 @@
  */
 
 import React, { Component } from 'react';
-import { Box, Button, Input, Link, Popover, Text } from 'reactlite';
+import { Box, Button, Input, Link, Popover, Text, Tooltip } from 'reactlite';
+
 class Demo extends Component {
   render() {
     return (
       <Box>
         <Box
           title="base"
-          data-aa="aaa"
           backgroundColor="#f90"
           style={{ backgroundColor: '#f00', fontSize: 54 }}
         >
-          <Link color="#f90">Link</Link>
+          <Tooltip content="Tooltip1 content" placement="bottom">
+            <Button>Tooltip 1</Button>
+          </Tooltip>
+          <Tooltip content="Tooltip2 content">
+            <Button>Tooltip 2</Button>
+          </Tooltip>
+          <Tooltip
+            content="Tooltip3 content"
+            placement="bottom"
+            trigger="click"
+          >
+            <Button>Tooltip 3</Button>
+          </Tooltip>
+          <Tooltip
+            content="Tooltip4 contentTooltip4 contentTooltip4 content"
+            placement="right"
+          >
+            <Button>Tooltip 4</Button>
+          </Tooltip>
+          <Link
+            color="black"
+            ref={ref => {
+              console.log(ref);
+            }}
+          >
+            Link
+          </Link>
+          <Button
+            disabled
+            inline
+            ref={ref => {
+              console.log(ref);
+            }}
+          >
+            Button disabled
+          </Button>
         </Box>
-        <Box height={400} backgroundColor="#eee">
+        <Box height={200} backgroundColor="#236">
           <Popover content="Popover1 content" placement="bottom">
-            <button>Popover1</button>
+            <Link>Popover state setState</Link>
+          </Popover>
+          <Popover content="Popover1 content" placement="bottom">
+            <Button>Popover1</Button>
           </Popover>
           <Popover
-            content={<Box background="#FFC107">Popover2 content</Box>}
+            content={
+              <Box background="#FFC107">
+                外层 Popover
+                <Popover
+                  content={
+                    <Box background="#FFC107">
+                      内层 Popover
+                      <Button backgroundColor="#f90" inline>
+                        Popover2
+                      </Button>
+                    </Box>
+                  }
+                  placement="top"
+                >
+                  <Button backgroundColor="#f90" inline>
+                    Popover2
+                  </Button>
+                </Popover>
+              </Box>
+            }
             placement="top"
           >
             <Button backgroundColor="#f90" inline>
@@ -55,7 +112,7 @@ class Demo extends Component {
                     .substr(2, 6)
                 }
               >
-                测试按钮 size={size}
+                测试Link size={size}
               </Link>
             ))}
           </Box>
@@ -66,7 +123,7 @@ class Demo extends Component {
           </Box>
           <Box display="flex" flexDirection="column">
             {['xs', 'sm', 'md', 'lg', 'xl'].map((size, index) => (
-              <Text as="h1" size={size} margin={1}>
+              <Text tag="h1" size={size} margin={1}>
                 测试文字 size={size}
               </Text>
             ))}

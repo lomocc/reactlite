@@ -10,7 +10,11 @@ const propsToStyle = {
     }
 };
 
-const InputBase = styled(Text)`
+const InputBase = React.forwardRef((props, ref) => {
+  const parsedProps = parseStyleProps(props, propsToStyle);
+  return <Text ref={ref} tag="input" data-class="Input" {...parsedProps} />;
+});
+const Input = styled(InputBase)`
   border-color: #8e8e8e;
   padding: 4px 8px;
   border: 1px solid rgba(0, 0, 0, 0.3);
@@ -38,13 +42,6 @@ const InputBase = styled(Text)`
     padding: 0;
   }
 `;
-const Input = props => {
-  const parsedProps = parseStyleProps(props, propsToStyle);
-  return (
-    <InputBase as="input" role="input" className="Input" {...parsedProps} />
-  );
-};
-
 Input.defaultProps = {
   type: 'text',
   shape: 'rounded'

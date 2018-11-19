@@ -4,21 +4,8 @@ import Box from './Box';
 /**
  * 图标组件
  */
-class Icon extends React.Component {
-  static defaultProps = {
-    path: 'M0 0L1024 0L1024 1024L0 1024z'
-  };
-  render() {
-    let {
-      src,
-      width,
-      height,
-      path,
-      sourceWidth,
-      sourceHeight,
-      ...props
-    } = this.props;
-
+const Icon = React.forwardRef(
+  ({ src, width, height, path, sourceWidth, sourceHeight, ...props }, ref) => {
     const iconWidth = width || height || 16;
     const iconHeight = height || width || 16;
 
@@ -28,7 +15,8 @@ class Icon extends React.Component {
     if (src) {
       return (
         <Box
-          as="img"
+          ref={ref}
+          tag="img"
           role="img"
           width={iconWidth}
           height={iconHeight}
@@ -39,7 +27,8 @@ class Icon extends React.Component {
     } else {
       return (
         <Box
-          as="svg"
+          ref={ref}
+          tag="svg"
           role="img"
           width={iconWidth}
           height={iconHeight}
@@ -54,5 +43,9 @@ class Icon extends React.Component {
       );
     }
   }
-}
+);
+Icon.defaultProps = {
+  path: 'M0 0L1024 0L1024 1024L0 1024z'
+};
+
 export default Icon;

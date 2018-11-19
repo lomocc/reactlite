@@ -24,7 +24,7 @@ const sizeStyles = {
 const propsToStyle = {
   italic: value => value && { fontStyle: 'italic' },
   bold: value => value && { fontWeight: 'bold' },
-  inline: value => value && { display: 'inline-block' },
+  inline: value => (value ? { display: 'inline-flex' } : { width: '100%' }),
   nowrap: value =>
     value && {
       maxWidth: '100%',
@@ -38,17 +38,19 @@ const propsToStyle = {
   size: value => sizeStyles[value]
 };
 
-const TextBase = styled(Box)`
+const TextBase = React.forwardRef((props, ref) => {
+  const parsedProps = parseStyleProps(props, propsToStyle);
+  return <Box ref={ref} tag="span" data-class="Text" {...parsedProps} />;
+});
+
+const Text = styled(TextBase)`
   line-height: unset;
   margin: unset;
 `;
-const Text = props => {
-  const parsedProps = parseStyleProps(props, propsToStyle);
-  return <TextBase as="span" role="text" className="Text" {...parsedProps} />;
-};
 
 Text.defaultProps = {
-  size: 'xs'
+  size: 'xs',
+  inline: false
 };
 
 Text.propTypes = {

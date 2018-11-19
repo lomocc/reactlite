@@ -3,7 +3,16 @@
  */
 
 import React, { Component } from 'react';
-import { Box, Divider, Icon, Layer, Link } from 'reactlite';
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  Icon,
+  Layer,
+  Link,
+  Text
+} from 'reactlite';
 import Benchmark from './Benchmark';
 import LayerExample from './LayerExample';
 import ReviewExample from './ReviewExample';
@@ -11,11 +20,31 @@ import ReviewExample from './ReviewExample';
 class Demo extends Component {
   render() {
     return (
-      <div>
+      <Container
+        as="h5"
+        tag="p"
+        widthRatio={1}
+        mdWidthRatio={0.5}
+        backgroundColor="#f00"
+        mdBackgroundColor="#aaa"
+      >
+        <Box shape="pill" backgroundColor="#f90" className="Box">
+          Box
+        </Box>
+        <Text shape="pill" backgroundColor="red" className="Text123">
+          Text
+        </Text>
+        <Button shape="pill">Button</Button>
         <Box paddingX={4} display="flex">
           <Icon />
           <Icon src="https://developer.mozilla.org/static/arrows/chevron-right.3b8652b57659.svg" />
-          <Link href="www.google.com" margin={4}>
+          <Link
+            href="www.google.com"
+            margin={7}
+            ref={ref => {
+              console.log(ref);
+            }}
+          >
             LinkLink
           </Link>
           <Divider vertical />
@@ -44,7 +73,7 @@ class Demo extends Component {
           <ReviewExample />
           <Benchmark />
         </Box>
-      </div>
+      </Container>
     );
   }
 }

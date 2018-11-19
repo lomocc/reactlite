@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import CSSProps from './utils/CSSProps';
 import ExtraCSSProps from './utils/ExtraCSSProps';
 
@@ -20,8 +21,19 @@ const mapStyleProps = ({ style, ...props }) => {
   return newProps;
 };
 
-const Box = ({ as = 'div', ...props }) => {
-  return React.createElement(as, mapStyleProps(props));
-};
+const BoxBase = React.forwardRef(({ tag = 'div', ...props }, ref) =>
+  React.createElement(tag, { ...mapStyleProps(props), ref })
+);
+
+const Box = styled(BoxBase)`
+  margin: unset;
+  padding: unset;
+  border: unset;
+  background: unset;
+  font: unset;
+  font-family: inherit;
+  font-size: 100%;
+  box-sizing: border-box;
+`;
 
 export default Box;

@@ -20,18 +20,15 @@ const propsToStyle = {
         }
 };
 
-const DividerBase = styled(Box)`
+const DividerBase = React.forwardRef((props, ref) => {
+  const parsedProps = parseStyleProps(props, propsToStyle);
+  return <Box tag="hr" role="divider" className="Divider" {...parsedProps} />;
+});
+const Divider = styled(DividerBase)`
   border-color: currentColor;
   border-style: solid;
   opacity: 0.2;
 `;
-const Divider = props => {
-  const parsedProps = parseStyleProps(props, propsToStyle);
-  return (
-    <DividerBase as="hr" role="divider" className="Divider" {...parsedProps} />
-  );
-};
-
 Divider.propTypes = {
   vertical: PropTypes.bool
 };
