@@ -12,6 +12,30 @@ npm install --save reactlite
 
 ## Usage
 
+### DEMO
+
+https://codesandbox.io/s/7yqyq2q8x
+
+### Box
+
+```jsx
+<Box color="red" fontSize="24px">
+  24px Red Div
+</Box>
+```
+
+### Container
+
+```jsx
+<Container
+  smBackgroundColor="red"
+  mdBackgroundColor="green"
+  lgBackgroundColor="blue"
+>
+  media query auto change backgroundColor: Red/Green/Blue
+</Container>
+```
+
 ### Layer
 
 ```jsx
