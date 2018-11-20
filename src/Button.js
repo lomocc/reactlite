@@ -28,6 +28,9 @@ const Button = styled(ButtonBase)`
   border-color: #007eff;
   outline: none;
   text-decoration: none;
+  & > * {
+    margin-right: 4px;
+  }
   &:after {
     display: none;
     content: '';

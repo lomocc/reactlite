@@ -24,12 +24,21 @@ class Demo extends Component {
         as="h5"
         tag="p"
         widthRatio={1}
-        mdWidthRatio={0.5}
+        mdWidthRatio={0.8}
         backgroundColor="#f00"
         mdBackgroundColor="#aaa"
       >
         <Box shape="pill" backgroundColor="#f90" className="Box">
-          Box
+          <Button>
+            <Icon marginRight={1} />
+            按钮
+          </Button>
+          <Button>
+            <Icon />
+            <Icon />
+            <Icon />
+            按钮
+          </Button>
         </Box>
         <Text shape="pill" backgroundColor="red" className="Text123">
           Text

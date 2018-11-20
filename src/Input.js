@@ -19,7 +19,6 @@ const Input = styled(InputBase)`
   padding: 4px 8px;
   border: 1px solid rgba(0, 0, 0, 0.3);
   display: block;
-  width: 100%;
   &:focus {
     border-color: #007eff;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
@@ -44,7 +43,8 @@ const Input = styled(InputBase)`
 `;
 Input.defaultProps = {
   type: 'text',
-  shape: 'rounded'
+  shape: 'rounded',
+  inline: true
 };
 
 export default Input;

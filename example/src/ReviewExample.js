@@ -9,11 +9,7 @@ class Demo extends Component {
   render() {
     return (
       <Box>
-        <Box
-          title="base"
-          backgroundColor="#f90"
-          style={{ backgroundColor: '#f00', fontSize: 54 }}
-        >
+        <Box title="base" backgroundColor="#f90">
           <Tooltip content="Tooltip1 content" placement="bottom">
             <Button>Tooltip 1</Button>
           </Tooltip>
