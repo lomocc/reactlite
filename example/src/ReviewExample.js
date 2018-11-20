@@ -88,7 +88,7 @@ class Demo extends Component {
         </Box>
         <Box>
           <Box backgroundColor="#eee">
-            {['xs', 'sm', 'md', 'lg', 'xl'].map((size, index) => (
+            {['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'].map((size, index) => (
               <Input
                 size={size}
                 color={
@@ -101,7 +101,7 @@ class Demo extends Component {
             ))}
           </Box>
           <Box backgroundColor="#eee">
-            {['xs', 'sm', 'md', 'lg', 'xl'].map((size, index) => (
+            {['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'].map((size, index) => (
               <Link
                 size={size}
                 href="#"
@@ -117,19 +117,19 @@ class Demo extends Component {
             ))}
           </Box>
           <Box display="flex" flexDirection="column">
-            {['xs', 'sm', 'md', 'lg', 'xl'].map((size, index) => (
+            {['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'].map((size, index) => (
               <Text size={size}>测试文字 size={size}</Text>
             ))}
           </Box>
           <Box display="flex" flexDirection="column">
-            {['xs', 'sm', 'md', 'lg', 'xl'].map((size, index) => (
+            {['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'].map((size, index) => (
               <Text tag="h1" size={size} margin={1}>
                 测试文字 size={size}
               </Text>
             ))}
           </Box>
           <Box backgroundColor="#eee">
-            {['xs', 'sm', 'md', 'lg', 'xl'].map((size, index) => (
+            {['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'].map((size, index) => (
               <Button
                 size={size}
                 backgroundColor={

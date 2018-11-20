@@ -5,20 +5,26 @@ import Box from './Box';
 import parseStyleProps from './utils/parseStyleProps';
 
 const sizeStyles = {
+  xxl: {
+    fontSize: '3rem'
+  },
   xl: {
-    fontSize: '2em'
+    fontSize: '2.25rem'
   },
   lg: {
-    fontSize: '1.75em'
+    fontSize: '1.5rem'
   },
   md: {
-    fontSize: '1.5em'
+    fontSize: '1.25rem'
   },
   sm: {
-    fontSize: '1.25em'
+    fontSize: '1rem'
   },
   xs: {
-    fontSize: '1em'
+    fontSize: '0.875rem'
+  },
+  xxs: {
+    fontSize: '0.75rem'
   }
 };
 const propsToStyle = {

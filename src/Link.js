@@ -58,7 +58,8 @@ const Link = styled(LinkBase)`
   }
   &:hover,
   &:focus {
-    filter: saturate(2);
+    opacity: 0.5;
+    transition: opacity 0.15s ease-in;
   }
   &:active,
   &.active {
