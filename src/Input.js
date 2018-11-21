@@ -16,7 +16,8 @@ const InputBase = React.forwardRef((props, ref) => {
 });
 const Input = styled(InputBase)`
   border-color: #8e8e8e;
-  padding: 4px 8px;
+  height: 2em;
+  padding: 0 0.68em;
   border: 1px solid rgba(0, 0, 0, 0.3);
   display: block;
   &:focus {
