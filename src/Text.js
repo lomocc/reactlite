@@ -56,7 +56,7 @@ const Text = styled(TextBase)`
 
 Text.defaultProps = {
   size: 'xs',
-  inline: false
+  inline: true
 };
 
 Text.propTypes = {

@@ -71,6 +71,6 @@ const Button = styled(ButtonBase)`
 Button.defaultProps = {
   tabIndex: 0,
   shape: 'rounded',
-  inline: false
+  inline: true
 };
 export default Button;

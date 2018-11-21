@@ -129,7 +129,9 @@ class Placeholder extends React.Component {
     return <Layer children={children} />;
   }
 }
+Layer.show = mount;
 Layer.mount = mount;
+Layer.hide = unmount;
 Layer.unmount = unmount;
 Layer.isMounted = isMounted;
 Layer.Placeholder = Placeholder;
