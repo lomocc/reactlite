@@ -44,7 +44,6 @@ const Input = styled(InputBase)`
 `;
 Input.defaultProps = {
   type: 'text',
-  shape: 'rounded',
   inline: true
 };
 
