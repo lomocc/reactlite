@@ -48,23 +48,33 @@ const Button = styled(ButtonBase)`
     grid-auto-flow: column;
     align-content: center;
   }
+  &,
+  &:link,
+  &:visited {
+    transition: color 0.15s ease-in;
+  }
+  &:hover,
+  &:focus {
+    opacity: 0.5;
+    transition: opacity 0.15s ease-in;
+  }
+  &:focus {
+    outline: 1px dotted currentColor;
+  }
+  &:active {
+    opacity: 0.8;
+    transition: opacity 0.15s ease-in;
+  }
   &[disabled] {
+    opacity: 0.5;
+  }
+  &[disabled] {
+    opacity: 0.5;
     pointer-events: none;
     color: #8e8e8e;
     &:after {
       display: block;
     }
-  }
-  &:hover,
-  &:focus {
-    box-shadow: inset 0 0 999em rgba(0, 0, 0, 0.1);
-  }
-  &:active {
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
-      0 0 0 3px rgba(0, 126, 255, 0.1);
-  }
-  &[disabled] {
-    box-shadow: inset 0 0 999em #efefef;
   }
 `;
 

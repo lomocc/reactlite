@@ -44,25 +44,30 @@ const Link = styled(LinkBase)`
     grid-auto-flow: column;
     align-content: center;
   }
-  &[disabled] {
-    pointer-events: none;
-    color: #8e8e8e;
-    &:after {
-      display: block;
-    }
-  }
   &,
   &:link,
   &:visited {
-    filter: none;
+    transition: color 0.15s ease-in;
   }
   &:hover,
   &:focus {
     opacity: 0.5;
     transition: opacity 0.15s ease-in;
   }
-  &:active,
-  &.active {
+  &:focus {
+    outline: 1px dotted currentColor;
+  }
+  &:active {
+    opacity: 0.8;
+    transition: opacity 0.15s ease-in;
+  }
+  &[disabled] {
+    opacity: 0.5;
+    pointer-events: none;
+    color: #8e8e8e;
+    &:after {
+      display: block;
+    }
   }
 `;
 Link.defaultProps = {

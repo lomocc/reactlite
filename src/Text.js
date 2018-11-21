@@ -60,7 +60,7 @@ Text.defaultProps = {
 };
 
 Text.propTypes = {
-  size: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
+  size: PropTypes.oneOf(['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl']),
   italic: PropTypes.bool,
   bold: PropTypes.bool,
   // 不换行
