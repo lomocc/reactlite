@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import { Box, Button, Popover, Tooltip } from 'reactlite';
+import { Box, Button, Popover, State, Tooltip } from 'reactlite';
 
 class Demo extends Component {
   render() {
@@ -30,47 +30,63 @@ class Demo extends Component {
             <Button>Tooltip 4</Button>
           </Tooltip>
 
-          <Button
-            disabled
-            inline
-            ref={ref => {
-              console.log(ref);
+          <Box
+            onClick={() => {
+              console.log('Button1 onClick');
             }}
           >
-            Button disabled
-          </Button>
+            Box onCLick
+          </Box>
         </Box>
         <Box height={200} backgroundColor="#236">
-          <Popover content="Popover1 content" placement="bottom">
-            <Button>Popover1</Button>
-          </Popover>
-          <Popover
-            content={
-              <Box background="#FFC107">
-                外层 Popover
-                <Popover
-                  content={
-                    <Box background="#FFC107">
-                      内层 Popover
-                      <Button backgroundColor="#f90" inline>
-                        Popover2
-                      </Button>
-                    </Box>
-                  }
-                  placement="top"
-                >
-                  <Button backgroundColor="#f90" inline>
-                    Popover2
+          <State state={{ visible: false }}>
+            {({ state: { visible }, setState }) => {
+              console.log('visible', visible);
+              return (
+                <React.Fragment>
+                  <Button
+                    onClick={() => {
+                      console.log('Button onClick');
+                      setState({ visible: !visible });
+                    }}
+                    id="button1"
+                  >
+                    State Popover1
                   </Button>
-                </Popover>
-              </Box>
-            }
-            placement="top"
-          >
-            <Button backgroundColor="#f90" inline>
-              Popover2
-            </Button>
-          </Popover>
+                  {visible && 'visible'}
+                  {visible && (
+                    <Popover placement="auto" target="#button1">
+                      content="Popover1 content"
+                    </Popover>
+                  )}
+                </React.Fragment>
+              );
+            }}
+          </State>
+          <State state={{ visible: false }}>
+            {({ state: { visible }, setState }) => {
+              console.log('visible', visible);
+              return (
+                <React.Fragment>
+                  <Button
+                    onClick={() => {
+                      console.log('Button onClick');
+                      setState({ visible: !visible });
+                    }}
+                    id="button2"
+                  >
+                    State Popover1
+                  </Button>
+                  {visible && 'visible'}
+                  {visible && (
+                    <Popover placement="bottom" target="#button2">
+                      content="Popover1 content"
+                    </Popover>
+                  )}
+                </React.Fragment>
+              );
+            }}
+          </State>
         </Box>
         <Box>
           <Box backgroundColor="#eee">

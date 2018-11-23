@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Component } from 'react';
 
-export default class Lifecycle extends Component {
+export default class Hook extends Component {
   static propTypes = {
     constructor: PropTypes.func,
     componentDidMount: PropTypes.func,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from './primitives';
+import { Box } from '../primitives';
 
 /**
  * 图标组件
@@ -21,7 +21,7 @@ const Icon = ({
 
   return (
     <Box
-      tag="svg"
+      is="svg"
       role="img"
       width={iconWidth}
       height={iconHeight}

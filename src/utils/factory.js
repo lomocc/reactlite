@@ -1,4 +1,5 @@
 import React from 'react';
+import filterHTMLProps from './filterHTMLProps';
 import getStyleCache from './getStyleCache';
 
 /** Shared instance of a style cache object. */
@@ -38,12 +39,12 @@ export default function factory(displayName, defaultProps) {
     static getDerivedStateFromProps = getDerivedStateFromProps;
 
     render() {
-      const { props, style, children, is } = this.props;
+      const { style, children, is, ...props } = this.props;
       const Component = is || 'div';
 
       return (
         <Component
-          {...props}
+          {...filterHTMLProps(props)}
           className={this.state.className || undefined}
           style={style || undefined}
         >

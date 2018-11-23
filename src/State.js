@@ -7,6 +7,7 @@ export default class State extends React.Component {
     this.state = props.state || {};
 
     this.setStateBond = (_, cb) => {
+      console.log('aaaa');
       this.setState(_, cb);
     };
 
@@ -48,6 +49,7 @@ export default class State extends React.Component {
   }
   render() {
     const { children } = this.props;
+    console.log('State render');
     return children({ state: this.state, setState: this.setStateBond }) || null;
   }
 }
