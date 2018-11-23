@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import { Box, Button, Input, Link, Popover, Text, Tooltip } from 'reactlite';
+import { Box, Button, Popover, Tooltip } from 'reactlite';
 
 class Demo extends Component {
   render() {
@@ -29,14 +29,7 @@ class Demo extends Component {
           >
             <Button>Tooltip 4</Button>
           </Tooltip>
-          <Link
-            color="black"
-            ref={ref => {
-              console.log(ref);
-            }}
-          >
-            Link
-          </Link>
+
           <Button
             disabled
             inline
@@ -48,9 +41,6 @@ class Demo extends Component {
           </Button>
         </Box>
         <Box height={200} backgroundColor="#236">
-          <Popover content="Popover1 content" placement="bottom">
-            <Link>Popover state setState</Link>
-          </Popover>
           <Popover content="Popover1 content" placement="bottom">
             <Button>Popover1</Button>
           </Popover>
@@ -85,7 +75,8 @@ class Demo extends Component {
         <Box>
           <Box backgroundColor="#eee">
             {['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'].map((size, index) => (
-              <Input
+              <Box
+                is="input"
                 size={size}
                 color={
                   '#' +
@@ -96,34 +87,7 @@ class Demo extends Component {
               />
             ))}
           </Box>
-          <Box backgroundColor="#eee">
-            {['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'].map((size, index) => (
-              <Link
-                size={size}
-                href="#"
-                color={
-                  '#' +
-                  Math.random()
-                    .toString(16)
-                    .substr(2, 6)
-                }
-              >
-                测试Link size={size}
-              </Link>
-            ))}
-          </Box>
-          <Box display="flex" flexDirection="column">
-            {['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'].map((size, index) => (
-              <Text size={size}>测试文字 size={size}</Text>
-            ))}
-          </Box>
-          <Box display="flex" flexDirection="column">
-            {['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'].map((size, index) => (
-              <Text tag="h1" size={size} margin={1}>
-                测试文字 size={size}
-              </Text>
-            ))}
-          </Box>
+
           <Box backgroundColor="#eee">
             {['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'].map((size, index) => (
               <Button

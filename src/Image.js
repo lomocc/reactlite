@@ -1,23 +1,18 @@
 import React from 'react';
-import Box from './Box';
+import { Box } from './primitives';
 
-const Image = React.forwardRef((props, ref) => {
+const Image = props => {
   let {
     src,
     contain = false,
     cover = false,
-    repeat = false,
     fit = false,
-    children,
-    backgroundColor,
-    color,
+    repeat = false,
     ...others
   } = props;
   return (
     <Box
-      ref={ref}
       role="img"
-      data-class="Image"
       width="100%"
       height="100%"
       backgroundPosition="center"
@@ -26,12 +21,9 @@ const Image = React.forwardRef((props, ref) => {
       backgroundSize={
         contain ? 'contain' : cover ? 'cover' : fit ? '100% 100%' : 'unset'
       }
-      backgroundColor={backgroundColor || color}
       backgroundImage={`url('${src}')`}
-    >
-      {children}
-    </Box>
+    />
   );
-});
+};
 
 export default Image;

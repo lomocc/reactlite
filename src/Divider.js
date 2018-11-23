@@ -1,36 +1,32 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import styled from 'styled-components';
-import Box from './Box';
-import parseStyleProps from './utils/parseStyleProps';
+import { Box } from './primitives';
 
-const propsToStyle = {
-  vertical: value =>
-    value
-      ? {
-          marginTop: '0 1em',
-          minHeight: '100%',
-          width: 0,
-          borderWidth: '0 0 0 1px'
-        }
-      : {
-          margin: '1em 0',
-          height: 0,
-          borderWidth: '1px 0 0 0'
-        }
-};
+const Divider = props => {
+  let { vertical = false, ...others } = props;
 
-const DividerBase = React.forwardRef((props, ref) => {
-  const parsedProps = parseStyleProps(props, propsToStyle);
-  return <Box tag="hr" role="divider" className="Divider" {...parsedProps} />;
-});
-const Divider = styled(DividerBase)`
-  border-color: currentColor;
-  border-style: solid;
-  opacity: 0.2;
-`;
-Divider.propTypes = {
-  vertical: PropTypes.bool
+  let dividerStyle = vertical
+    ? {
+        marginTop: '0 1em',
+        minHeight: '100%',
+        width: 0,
+        borderWidth: '0 0 0 1px'
+      }
+    : {
+        margin: '1em 0',
+        height: 0,
+        borderWidth: '1px 0 0 0'
+      };
+  return (
+    <Box
+      is="hr"
+      borderColor="currentColor"
+      borderStyle="solid"
+      opacity="0.2"
+      role="divider"
+      {...dividerStyle}
+      {...others}
+    />
+  );
 };
 
 export default Divider;

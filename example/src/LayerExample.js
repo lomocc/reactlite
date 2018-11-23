@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import { Box, Text, Button, Layer } from 'reactlite';
+import { Box, Button, Layer } from 'reactlite';
 
 class Modal extends Component {
   removeSelf = () => {
@@ -25,7 +25,6 @@ class Modal extends Component {
         }
       >
         <Button>{title}</Button>
-        <Text>Modal</Text>
 
         <Button onClick={this.removeSelf}>移除自身</Button>
       </Box>
