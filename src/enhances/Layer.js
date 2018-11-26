@@ -8,10 +8,10 @@ import ReactDOM from 'react-dom';
  * showLayer && <Layer><div>Layer Content</div></Layer>
  *
  * 方式 2
- * <Layer.Placeholder/>
- * let element = <Tooltip/>;
- * Layer.mount(element);
- * Layer.unmount(element);
+ * <Layer.Container/>
+ * let modal = <Modal/>;
+ * Layer.mount(modal);
+ * Layer.unmount(modal);
  *
  */
 const __layerMap = new Map();
@@ -41,7 +41,7 @@ function mount(name, element, onMountCallback, onUnmountCallback) {
   if (typeof name === 'string') {
     const unmountSelf = () => unmount(name, element);
     if (!__layerMap.has(name)) {
-      console.error(`[Layer] 需要先添加 <Layer.Placeholder/>`);
+      console.error(`[Layer] 需要先添加 <Layer.Container/>`);
     }
     if (__elementMap.has(element)) {
       console.warn(`[Layer] 重复的 element: `, element);
@@ -108,7 +108,7 @@ class Layer extends React.Component {
     return ReactDOM.createPortal(children, this.el);
   }
 }
-class Placeholder extends React.Component {
+class Container extends React.Component {
   static defaultProps = {
     name: __defaultName
   };
@@ -129,10 +129,8 @@ class Placeholder extends React.Component {
     return <Layer children={children} />;
   }
 }
-Layer.show = mount;
 Layer.mount = mount;
-Layer.hide = unmount;
 Layer.unmount = unmount;
 Layer.isMounted = isMounted;
-Layer.Placeholder = Placeholder;
+Layer.Container = Container;
 export default Layer;

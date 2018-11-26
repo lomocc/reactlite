@@ -1,66 +1,71 @@
 import Popper from 'popper.js';
-import React, { Fragment, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
+import { Box } from '../primitives';
 
-let caretStyles = {
-  top: {
-    bottom: 0,
-    left: 'calc(50% - 5px)'
-  },
-  right: {
-    left: 0,
-    top: 'calc(50% - 5px)'
-  },
-  bottom: {
-    position: 'absolute',
-    top: '5px',
-    left: 'calc(50% - 5px)'
-  },
-  left: {
-    right: 0,
-    top: 'calc(50% - 5px)'
-  }
-};
-function Caret({ direction, ...props }) {
-  let path;
-  switch (direction) {
-    case 'top':
-      path = 'M0 0 L12 12 L24 0';
-      break;
-    case 'right':
-      path = 'M24 0 L12 12 L24 24';
-      break;
-    case 'bottom':
-      path = 'M0 24 L12 12 L24 24';
-      break;
-    case 'left':
-      path = 'M0 0 L12 12 L0 24';
-      break;
-    default:
-  }
-  let style = caretStyles[direction];
+function Arrow({ placement, size, ...props }) {
+  const placementToArrow = {
+    top: `M0 0 L${size / 2} ${size / 2} L${size} 0`,
+    right: `M${size} 0 L${size / 2} ${size / 2} L${size} ${size}`,
+    bottom: `M0 ${size} L${size / 2} ${size / 2} L${size} ${size}`,
+    left: `M0 0 L${size / 2} ${size / 2} L0 ${size}`
+  };
+  const arrowPath = placementToArrow[placement];
 
-  console.log('caretStyles', style);
+  const centerStyle = `calc(50% - ${size / 2}px)`;
+  const caretStyles = {
+    top: {
+      position: 'absolute',
+      bottom: -size + 1,
+      left: centerStyle
+    },
+    right: {
+      position: 'absolute',
+      left: -size + 1,
+      top: centerStyle
+    },
+    bottom: {
+      position: 'absolute',
+      top: -size + 1,
+      left: centerStyle
+    },
+    left: {
+      position: 'absolute',
+      right: -size + 1,
+      top: centerStyle
+    }
+  };
+  const styles = caretStyles[placement];
 
   return (
-    <svg width="24" height="24" style={style} {...props}>
-      <path d={path} />
-    </svg>
+    <Box is="svg" width={size} height={size} {...styles} {...props}>
+      <path d={arrowPath} />
+    </Box>
   );
 }
 
 export default class extends PureComponent {
   static defaultProps = {
-    placement: 'auto'
+    placement: 'auto',
+    shape: 'rounded',
+    arrowSize: 12,
+    borderColor: '#ddd',
+    backgroundColor: '#eee'
   };
   popper = null;
 
   onClick = event => {
-    const el = ReactDOM.findDOMNode(this);
-    if (!el || (event.target instanceof Node && el.contains(event.target))) {
+    if (!event.target instanceof Node) {
       return;
     }
-    this.onClickOutside(event);
+    if (this.el.contains(event.target)) {
+      return;
+    }
+    let targetDOMNode = this.getTargetDOMNode();
+    if (targetDOMNode && !targetDOMNode.contains(event.target)) {
+      let { onDismiss } = this.props;
+      onDismiss && onDismiss();
+    }
   };
   onClickOutside = event => {
     let targetDOMNode = this.getTargetDOMNode();
@@ -75,8 +80,6 @@ export default class extends PureComponent {
   };
 
   onResize = () => {
-    console.log('onResize');
-
     this.updatePopper();
   };
 
@@ -87,17 +90,15 @@ export default class extends PureComponent {
     super(props);
 
     this.el = document.createElement('div');
-    this.el.className = 'popover';
   }
   getTargetDOMNode = () => {
     let { target } = this.props;
-    let targetDOMNode;
     if (typeof target === 'string') {
-      targetDOMNode = document.querySelector(target);
-    } else {
-      targetDOMNode = target;
+      return document.querySelector(target);
     }
-    return targetDOMNode;
+    if (target instanceof Node) {
+      return target;
+    }
   };
 
   updatePopper = () => {
@@ -106,9 +107,12 @@ export default class extends PureComponent {
     let targetDOMNode = this.getTargetDOMNode() || document.body;
     this.popper = new Popper(targetDOMNode, this.el, {
       placement,
+      offset: 40,
       modifiers: {
         applyStyle: { enabled: true },
-        arrow: { enabled: true, element: '[data-x-arrow]' }
+        arrow: { enabled: true, element: '[data-x-arrow]' },
+        offset: { offset: `0, 10` },
+        flip: { enabled: true, padding: 16 }
       },
       onCreate: ({ placement, ...args }) => {
         this.setState({ placement });
@@ -148,15 +152,35 @@ export default class extends PureComponent {
   }
 
   render() {
-    const { children, arrow } = this.props;
-    const { placement } = this.props;
+    const {
+      children,
+      shape,
+      arrowSize,
+      borderColor,
+      backgroundColor
+    } = this.props;
+    const { placement } = this.state;
 
-    return ReactDOM.createPortal(
-      <Fragment>
-        {placement}-{children}
-        <Caret direction={placement} data-x-arrow="" />
-      </Fragment>,
-      this.el
+    return (
+      placement &&
+      ReactDOM.createPortal(
+        <Box
+          shape={shape}
+          borderWidth={1}
+          borderStyle="solid"
+          borderColor={borderColor}
+          backgroundColor={backgroundColor}
+        >
+          {children}
+          <Arrow
+            size={arrowSize}
+            placement={placement}
+            stroke={borderColor}
+            fill={backgroundColor}
+          />
+        </Box>,
+        this.el
+      )
     );
   }
 }

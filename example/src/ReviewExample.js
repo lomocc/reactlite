@@ -38,55 +38,36 @@ class Demo extends Component {
             Box onCLick
           </Box>
         </Box>
-        <Box height={200} backgroundColor="#236">
-          <State state={{ visible: false }}>
-            {({ state: { visible }, setState }) => {
-              console.log('visible', visible);
-              return (
-                <React.Fragment>
-                  <Button
-                    onClick={() => {
-                      console.log('Button onClick');
-                      setState({ visible: !visible });
-                    }}
-                    id="button1"
-                  >
-                    State Popover1
-                  </Button>
-                  {visible && 'visible'}
-                  {visible && (
-                    <Popover placement="auto" target="#button1">
-                      content="Popover1 content"
-                    </Popover>
-                  )}
-                </React.Fragment>
-              );
-            }}
-          </State>
-          <State state={{ visible: false }}>
-            {({ state: { visible }, setState }) => {
-              console.log('visible', visible);
-              return (
-                <React.Fragment>
-                  <Button
-                    onClick={() => {
-                      console.log('Button onClick');
-                      setState({ visible: !visible });
-                    }}
-                    id="button2"
-                  >
-                    State Popover1
-                  </Button>
-                  {visible && 'visible'}
-                  {visible && (
-                    <Popover placement="bottom" target="#button2">
-                      content="Popover1 content"
-                    </Popover>
-                  )}
-                </React.Fragment>
-              );
-            }}
-          </State>
+        <Box backgroundColor="red" border="5px black solid">
+          {['auto', 'top', 'right', 'bottom', 'left'].map(
+            (placement, index) => (
+              <State state={{ visible: false }}>
+                {({ state: { visible }, setState }) => {
+                  return (
+                    <React.Fragment>
+                      <Button
+                        onClick={() => setState({ visible: !visible })}
+                        id={`popover${index}`}
+                      >
+                        {`#Popover ${placement} ${index}`}
+                      </Button>
+                      {visible && (
+                        <Popover
+                          placement={placement}
+                          target={`#popover${index}`}
+                          onDismiss={() => setState({ visible: false })}
+                        >
+                          <Box padding={16}>
+                            {`Popover ${placement} ${index}`}
+                          </Box>
+                        </Popover>
+                      )}
+                    </React.Fragment>
+                  );
+                }}
+              </State>
+            )
+          )}
         </Box>
         <Box>
           <Box backgroundColor="#eee">

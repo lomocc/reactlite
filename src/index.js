@@ -1,4 +1,3 @@
-export { default as React } from 'react';
 export * from './enhances';
 export { default as Image } from './Image';
 export * from './primitives';

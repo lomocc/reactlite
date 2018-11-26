@@ -3,12 +3,11 @@
  */
 
 import React, { Component } from 'react';
-import { Box, Button, Icon, Layer, React as React2 } from 'reactlite';
+import { Box, Button, Icon, Layer } from 'reactlite';
 import Benchmark from './Benchmark';
 import LayerExample from './LayerExample';
 import ReviewExample from './ReviewExample';
 
-console.log('React === React', React2, React, React2 === React);
 class Demo extends Component {
   render() {
     return (
@@ -41,7 +40,7 @@ class Demo extends Component {
         </Box>
         <Box paddingX={4}>
           <LayerExample />
-          <Layer.Placeholder />
+          <Layer.Container />
           <ReviewExample />
           <Benchmark />
         </Box>
