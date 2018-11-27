@@ -119,6 +119,8 @@ const CustomCSSProps = {
   shape: value => shapes[value],
   italic: value => value && { fontStyle: 'italic' },
   bold: value => value && { fontWeight: 'bold' },
-  size: value => sizes[value]
+  size: value => sizes[value],
+  block: value => value && { display: 'block', width: '100%' },
+  inline: value => value && { display: 'inline-block' }
 };
 export default CustomCSSProps;
