@@ -1,5 +1,5 @@
 const roundedBorderRadius = '0.25em';
-const shapeTypes = {
+const shapes = {
   square: { borderRadius: 0 },
   circle: { borderRadius: '50%' },
   pill: { borderRadius: '999px' },
@@ -17,7 +17,7 @@ const shapeTypes = {
     borderRadius: `${roundedBorderRadius} 0 0 ${roundedBorderRadius}`
   }
 };
-const sizeTypes = {
+const sizes = {
   xxl: {
     fontSize: '3rem'
   },
@@ -40,28 +40,81 @@ const sizeTypes = {
     fontSize: '0.75rem'
   }
 };
+const factor4 = value => (typeof value === 'number' ? value * 4 : value);
 const CustomCSSProps = {
   top: value => ({ top: value === true ? 0 : value }),
   right: value => ({ right: value === true ? 0 : value }),
   bottom: value => ({ bottom: value === true ? 0 : value }),
   left: value => ({ left: value === true ? 0 : value }),
+  // margin
+  margin: value => ({
+    margin: factor4(value)
+  }),
+  marginTop: value => ({
+    marginTop: factor4(value)
+  }),
+  marginRight: value => ({
+    marginRight: factor4(value)
+  }),
+  marginBottom: value => ({
+    marginBottom: factor4(value)
+  }),
+  marginLeft: value => ({
+    marginLeft: factor4(value)
+  }),
+  // padding
+  padding: value => ({
+    padding: factor4(value)
+  }),
+  paddingTop: value => ({
+    paddingTop: factor4(value)
+  }),
+  paddingRight: value => ({
+    paddingRight: factor4(value)
+  }),
+  paddingBottom: value => ({
+    paddingBottom: factor4(value)
+  }),
+  paddingLeft: value => ({
+    paddingLeft: factor4(value)
+  }),
   paddingX: value => ({
-    paddingLeft: value,
-    paddingRight: value
+    paddingLeft: factor4(value),
+    paddingRight: factor4(value)
   }),
   paddingY: value => ({
-    paddingTop: value,
-    paddingBottom: value
+    paddingTop: factor4(value),
+    paddingBottom: factor4(value)
   }),
-  widthRatio: value => ({ width: `${value * 100}%` }),
-  heightRatio: value => ({ height: `${value * 100}%` }),
+  // flex
+  flexGrow: value =>
+    value && {
+      flex: value === true ? '1 1 auto' : value
+      // minHeight: 0,
+      // minWidth: 0
+    },
+  wrap: value => ({
+    flexWrap: value === true ? 'wrap' : value
+  }),
+  verticalCenter: value =>
+    value && {
+      alignItems: 'center'
+    },
+  horizontalCenter: value =>
+    value && {
+      justifyContent: 'center'
+    },
+  column: value => ({
+    width: `${Math.round((value < 1 ? value : value / 12) * 1e6) / 1e4}%`
+  }),
   aspectRatio: value => ({
     paddingBottom: `${(1 / value) * 100}%`,
     height: 0
   }),
-  shape: value => shapeTypes[value],
+  hidden: value => !value && { visibility: 'hidden' },
+  shape: value => shapes[value],
   italic: value => value && { fontStyle: 'italic' },
   bold: value => value && { fontWeight: 'bold' },
-  size: value => sizeTypes[value]
+  size: value => sizes[value]
 };
 export default CustomCSSProps;

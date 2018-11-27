@@ -23,6 +23,8 @@ class Demo extends Component {
     return (
       <Box widthRatio={1} aspectRatio={1}>
         <Box
+          column={0.5}
+          smColumn={11}
           props={{ shape: '123' }}
           data-abc="abc"
           title="title"

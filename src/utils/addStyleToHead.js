@@ -4,8 +4,6 @@ document.head.appendChild(style);
 const sheet = style.sheet;
 
 export default function addStyleToHead(rule) {
-  console.log('rule', rule);
-  // const sheet = styleElement.sheet;
   try {
     sheet.insertRule(rule, sheet.cssRules.length);
   } catch (error) {
