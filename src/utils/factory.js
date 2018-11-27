@@ -39,12 +39,13 @@ export default function factory(displayName, defaultProps) {
     static getDerivedStateFromProps = getDerivedStateFromProps;
 
     render() {
-      const { style, children, is, ...props } = this.props;
+      const { style, children, is, props, ...others } = this.props;
       const Component = is || 'div';
 
       return (
         <Component
-          {...filterHTMLProps(props)}
+          {...filterHTMLProps(others)}
+          {...props}
           className={this.state.className || undefined}
           style={style || undefined}
         >

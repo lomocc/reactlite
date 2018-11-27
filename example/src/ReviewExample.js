@@ -9,7 +9,13 @@ class Demo extends Component {
   render() {
     return (
       <Box>
-        <Box title="base" backgroundColor="#f90">
+        <Box
+          title="base"
+          backgroundColor="#f90"
+          padding={8}
+          shape="rounded"
+          $shape="rounded"
+        >
           <Tooltip content="Tooltip1 content" placement="bottom">
             <Button>Tooltip 1</Button>
           </Tooltip>

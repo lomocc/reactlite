@@ -40,7 +40,7 @@ const sizeTypes = {
     fontSize: '0.75rem'
   }
 };
-const enhanceStyles = {
+const CustomCSSProps = {
   top: value => ({ top: value === true ? 0 : value }),
   right: value => ({ right: value === true ? 0 : value }),
   bottom: value => ({ bottom: value === true ? 0 : value }),
@@ -64,4 +64,4 @@ const enhanceStyles = {
   bold: value => value && { fontWeight: 'bold' },
   size: value => sizeTypes[value]
 };
-export default enhanceStyles;
+export default CustomCSSProps;

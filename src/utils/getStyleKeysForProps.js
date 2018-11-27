@@ -1,5 +1,5 @@
-import dangerousStyleValue from './dangerousStyleValue';
-import getEnhanceStyles from './getEnhanceStyles';
+import getStyleValues from './getStyleValues';
+import SpecialProps from './SpecialProps';
 
 // global flag makes subsequent calls of capRegex.test advance to the next match
 const capRegex = /[A-Z]/g;
@@ -23,16 +23,6 @@ export const pseudoclasses = {
   required: true,
   target: true,
   valid: true
-};
-
-const specialCaseProps = {
-  children: true,
-  class: true,
-  className: true,
-  is: true,
-  mediaQueries: true,
-  props: true,
-  style: true
 };
 
 export default function getStyleKeysForProps(props, pretty = false) {
@@ -66,8 +56,9 @@ export default function getStyleKeysForProps(props, pretty = false) {
 
   for (let idx = -1; ++idx < keyCount; ) {
     const originalPropName = propKeys[idx];
+
     if (
-      specialCaseProps.hasOwnProperty(originalPropName) ||
+      SpecialProps.hasOwnProperty(originalPropName) ||
       !props.hasOwnProperty(originalPropName)
     ) {
       continue;
@@ -125,10 +116,12 @@ export default function getStyleKeysForProps(props, pretty = false) {
         originalPropName.slice(splitIndex + 1);
     }
 
-    const styleValue = dangerousStyleValue(propName, props[originalPropName]);
-    if (styleValue === '') {
-      continue;
-    }
+    const styleValue = props[originalPropName];
+
+    // const styleValue = dangerousStyleValue(propName, props[originalPropName]);
+    // if (styleValue === '') {
+    //   continue;
+    // }
 
     const mediaQuery = mqKey && mediaQueries[mqKey];
     const mqSortKey = mqKey && mqSortKeys[mqKey];
@@ -154,27 +147,11 @@ export default function getStyleKeysForProps(props, pretty = false) {
 
     if (mediaQuery) {
       seenMQs[mediaQuery] = seenMQs[mediaQuery] || '';
-      // seenMQs[mediaQuery] += getEnhanceStyles(propSansMQ, styleValue);
       seenMQs[mediaQuery] += propSansMQ + ':' + styleValue + ';';
     } else {
-      // classNameKey += getEnhanceStyles(originalPropName, styleValue);
       classNameKey += originalPropName + ':' + styleValue + ';';
     }
-    if (props.shape == 'circle') {
-      console.log(propName, styleValue);
-    }
-    styleKeyObj[key].styles += getEnhanceStyles(propName, styleValue, pretty);
-    // (pretty ? '  ' : '') +
-    //   hyphenateStyleName(propName) +
-    //   (pretty ? ': ' : ':') +
-    //   styleValue +
-    //   (pretty ? ';\n' : ';');
-    // styleKeyObj[key].styles +=
-    //   (pretty ? '  ' : '') +
-    //   hyphenateStyleName(propName) +
-    //   (pretty ? ': ' : ':') +
-    //   styleValue +
-    //   (pretty ? ';\n' : ';');
+    styleKeyObj[key].styles += getStyleValues(propName, styleValue, pretty);
   }
 
   // append media query key
@@ -185,14 +162,10 @@ export default function getStyleKeysForProps(props, pretty = false) {
       classNameKey += `@${mediaQuery}~${seenMQs[mediaQuery]}`;
     }
   }
-  if (props.shape == 'circle') {
-    console.log(props.shape, props, classNameKey, styleKeyObj);
-  }
+
   if (classNameKey === '') {
     return null;
   }
-
   styleKeyObj.classNameKey = classNameKey;
-
   return styleKeyObj;
 }

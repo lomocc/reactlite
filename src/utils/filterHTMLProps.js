@@ -1,17 +1,15 @@
 import isPropValid from '@emotion/is-prop-valid';
+import CSSProps from './CSSProps';
+import CustomCSSProps from './CustomCSSProps';
 
-function filterHTMLProps(props) {
-  const filteredProps = {};
+export default function filterHTMLProps(props, callback) {
+  let filteredProps = {};
 
   for (const prop in props) {
-    if (props.hasOwnProperty(prop)) {
-      if (isPropValid(prop)) {
-        filteredProps[prop] = props[prop];
-      }
+    if (!(prop in CSSProps) && !(prop in CustomCSSProps) && isPropValid(prop)) {
+      filteredProps[prop] = props[prop];
     }
   }
 
   return filteredProps;
 }
-
-export default filterHTMLProps;

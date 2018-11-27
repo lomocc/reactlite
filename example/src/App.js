@@ -8,17 +8,43 @@ import Benchmark from './Benchmark';
 import LayerExample from './LayerExample';
 import ReviewExample from './ReviewExample';
 
+let Container = props => (
+  <Box
+    mediaQueries={{
+      sm: 'screen and (max-width: 640px)',
+      lg: 'screen and (min-width: 1280px)'
+    }}
+    {...props}
+  />
+);
+
 class Demo extends Component {
   render() {
     return (
-      <Box
-        as="h5"
-        tag="p"
-        widthRatio={1}
-        mdWidthRatio={0.8}
-        backgroundColor="#f00"
-        mdBackgroundColor="#aaa"
-      >
+      <Box widthRatio={1} aspectRatio={1}>
+        <Box
+          props={{ shape: '123' }}
+          data-abc="abc"
+          title="title"
+          onClick={() => {
+            alert('onClick');
+          }}
+          shape="pill"
+          smShape="rounded"
+          backgroundColor="#f00"
+          mediaQueries={{
+            sm: 'screen and (max-width: 640px)',
+            lg: 'screen and (min-width: 1280px)'
+          }}
+          color="red"
+          smColor="blue"
+          lgColor="green"
+        >
+          Box
+        </Box>
+        <Container color="red" smColor="blue" lgColor="green" padding={20}>
+          Container
+        </Container>
         <Box shape="pill" backgroundColor="#f90" className="Box">
           <Button>
             <Icon marginRight={1} />

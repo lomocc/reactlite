@@ -70,32 +70,19 @@ Object.keys(isUnitlessNumber).forEach(prop => {
   });
 });
 
-export default function dangerousStyleValue(name, value) {
+export default function dangerousStyleValue(name, value, isCustomProperty) {
   const isEmpty = value == null || typeof value === 'boolean' || value === '';
   if (isEmpty) {
     return '';
   }
 
   if (
+    !isCustomProperty &&
     typeof value === 'number' &&
     value !== 0 &&
     !(isUnitlessNumber.hasOwnProperty(name) && isUnitlessNumber[name])
   ) {
-    if (value > -1 && value < 1) {
-      return Math.round(value * 1e6) / 1e4 + '%';
-    }
-    return value + 'px';
-  }
-
-  if (!value.toString) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error(
-        'Value for prop `%s` (`%o`) cannot be stringified.',
-        name,
-        value
-      );
-    }
-    return '';
+    return value + 'px'; // Presumes implicit 'px' suffix for unitless numbers
   }
 
   return ('' + value).trim();

@@ -116,11 +116,9 @@ export default class extends PureComponent {
       },
       onCreate: ({ placement, ...args }) => {
         this.setState({ placement });
-        console.log('onCreate', placement, args);
       },
       onUpdate: ({ placement }) => {
         this.setState({ placement });
-        console.log('onUpdate', placement);
       }
     });
   };
