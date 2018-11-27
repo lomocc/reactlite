@@ -107,6 +107,10 @@ const CustomCSSProps = {
   column: value => ({
     width: `${Math.round((value < 1 ? value : value / 12) * 1e6) / 1e4}%`
   }),
+  fit: value =>
+    value && {
+      maxWidth: '100%'
+    },
   aspectRatio: value => ({
     paddingBottom: `${(1 / value) * 100}%`,
     height: 0
