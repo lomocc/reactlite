@@ -4,15 +4,7 @@ import { Box } from '../primitives';
 /**
  * 图标组件
  */
-const Icon = ({
-  src,
-  width,
-  height,
-  path,
-  sourceWidth,
-  sourceHeight,
-  ...props
-}) => {
+const Icon = ({ width, height, path, sourceWidth, sourceHeight, ...props }) => {
   const iconWidth = width || height || 16;
   const iconHeight = height || width || 16;
 

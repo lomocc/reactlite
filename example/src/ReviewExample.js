@@ -52,7 +52,8 @@ class Demo extends Component {
                   return (
                     <React.Fragment>
                       <Button
-                        onClick={() => setState({ visible: !visible })}
+                        onMouseEnter={() => setState({ visible: true })}
+                        onMouseLeave={() => setState({ visible: false })}
                         id={`popover${index}`}
                       >
                         {`#Popover ${placement} ${index}`}
@@ -61,9 +62,10 @@ class Demo extends Component {
                         <Popover
                           placement={placement}
                           target={`#popover${index}`}
-                          onDismiss={() => setState({ visible: false })}
+                          onClickOutside={() => setState({ visible: false })}
+                          onMouseLeave={() => setState({ visible: false })}
                         >
-                          <Box padding={16}>
+                          <Box padding={4}>
                             {`Popover ${placement} ${index}`}
                           </Box>
                         </Popover>

@@ -3,42 +3,44 @@ import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import { Box } from '../primitives';
 
-function Arrow({ placement, size, ...props }) {
+function Arrow({ placement, arrowSize, ...props }) {
   const placementToArrow = {
-    top: `M0 0 L${size / 2} ${size / 2} L${size} 0`,
-    right: `M${size} 0 L${size / 2} ${size / 2} L${size} ${size}`,
-    bottom: `M0 ${size} L${size / 2} ${size / 2} L${size} ${size}`,
-    left: `M0 0 L${size / 2} ${size / 2} L0 ${size}`
+    top: `M0 0 L${arrowSize / 2} ${arrowSize / 2} L${arrowSize} 0`,
+    right: `M${arrowSize} 0 L${arrowSize / 2} ${arrowSize /
+      2} L${arrowSize} ${arrowSize}`,
+    bottom: `M0 ${arrowSize} L${arrowSize / 2} ${arrowSize /
+      2} L${arrowSize} ${arrowSize}`,
+    left: `M0 0 L${arrowSize / 2} ${arrowSize / 2} L0 ${arrowSize}`
   };
   const arrowPath = placementToArrow[placement];
 
-  const centerStyle = `calc(50% - ${size / 2}px)`;
+  const centerStyle = `calc(50% - ${arrowSize / 2}px)`;
   const caretStyles = {
     top: {
       position: 'absolute',
-      bottom: -size + 1,
+      bottom: -arrowSize + 1,
       left: centerStyle
     },
     right: {
       position: 'absolute',
-      left: -size + 1,
+      left: -arrowSize + 1,
       top: centerStyle
     },
     bottom: {
       position: 'absolute',
-      top: -size + 1,
+      top: -arrowSize + 1,
       left: centerStyle
     },
     left: {
       position: 'absolute',
-      right: -size + 1,
+      right: -arrowSize + 1,
       top: centerStyle
     }
   };
   const styles = caretStyles[placement];
 
   return (
-    <Box is="svg" width={size} height={size} {...styles} {...props}>
+    <Box is="svg" width={arrowSize} height={arrowSize} {...styles} {...props}>
       <path d={arrowPath} />
     </Box>
   );
@@ -46,9 +48,9 @@ function Arrow({ placement, size, ...props }) {
 
 export default class extends PureComponent {
   static defaultProps = {
+    arrowSize: 12,
     placement: 'auto',
     shape: 'rounded',
-    arrowSize: 12,
     borderColor: '#ddd',
     backgroundColor: '#eee'
   };
@@ -63,8 +65,8 @@ export default class extends PureComponent {
     }
     let targetDOMNode = this.getTargetDOMNode();
     if (targetDOMNode && !targetDOMNode.contains(event.target)) {
-      let { onDismiss } = this.props;
-      onDismiss && onDismiss();
+      let { onClickOutside } = this.props;
+      onClickOutside && onClickOutside();
     }
   };
   onClickOutside = event => {
@@ -74,8 +76,8 @@ export default class extends PureComponent {
       targetDOMNode &&
       !targetDOMNode.contains(event.target)
     ) {
-      let { onDismiss } = this.props;
-      onDismiss && onDismiss();
+      let { onClickOutside } = this.props;
+      onClickOutside && onClickOutside();
     }
   };
 
@@ -102,7 +104,7 @@ export default class extends PureComponent {
   };
 
   updatePopper = () => {
-    const { placement, target } = this.props;
+    const { placement, arrow } = this.props;
     document.body.appendChild(this.el);
     let targetDOMNode = this.getTargetDOMNode() || document.body;
     this.popper = new Popper(targetDOMNode, this.el, {
@@ -111,7 +113,7 @@ export default class extends PureComponent {
       modifiers: {
         applyStyle: { enabled: true },
         arrow: { enabled: true, element: '[data-x-arrow]' },
-        offset: { offset: `0, 10` },
+        offset: { enabled: arrow, offset: `0, 10` },
         flip: { enabled: true, padding: 16 }
       },
       onCreate: ({ placement, ...args }) => {
@@ -151,31 +153,38 @@ export default class extends PureComponent {
 
   render() {
     const {
-      children,
-      shape,
+      onClickOutside,
+      placement,
+      target,
+      arrow,
       arrowSize,
+
+      children,
       borderColor,
-      backgroundColor
+      backgroundColor,
+      ...props
     } = this.props;
-    const { placement } = this.state;
+    const { placement: statePlacement } = this.state;
 
     return (
-      placement &&
+      statePlacement &&
       ReactDOM.createPortal(
         <Box
-          shape={shape}
           borderWidth={1}
           borderStyle="solid"
           borderColor={borderColor}
           backgroundColor={backgroundColor}
+          {...props}
         >
           {children}
-          <Arrow
-            size={arrowSize}
-            placement={placement}
-            stroke={borderColor}
-            fill={backgroundColor}
-          />
+          {arrow && (
+            <Arrow
+              arrowSize={arrowSize}
+              placement={statePlacement}
+              stroke={borderColor}
+              fill={backgroundColor}
+            />
+          )}
         </Box>,
         this.el
       )
