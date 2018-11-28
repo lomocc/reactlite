@@ -105,7 +105,7 @@ const CustomCSSProps = {
       justifyContent: 'center'
     },
   column: value => ({
-    width: `${Math.round((value < 1 ? value : value / 12) * 1e6) / 1e4}%`
+    width: `${Math.round(value * 1e6) / 1e4}%`
   }),
   fit: value =>
     value && {
