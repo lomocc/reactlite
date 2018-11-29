@@ -1,11 +1,11 @@
 import React from 'react';
 import { Box } from './primitives';
 
-const WebPEnabled = (function() {
+const webpSupported = (function() {
   const canvas = document.createElement('canvas');
   canvas.width = 1;
   canvas.height = 1;
-  return anvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+  return canvas.toDataURL('image/webp').substring(5, 15) === 'image/webp';
 })();
 
 const Image = props => {
@@ -29,7 +29,7 @@ const Image = props => {
       backgroundSize={
         contain ? 'contain' : cover ? 'cover' : fit ? '100% 100%' : 'unset'
       }
-      backgroundImage={`url('${WebPEnabled ? webp || src : src}')`}
+      backgroundImage={`url('${webpSupported ? webp || src : src}')`}
     />
   );
 };
