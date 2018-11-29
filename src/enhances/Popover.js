@@ -117,10 +117,14 @@ export default class extends PureComponent {
         flip: { enabled: true, padding: 16 }
       },
       onCreate: ({ placement, ...args }) => {
-        this.setState({ placement });
+        if (this.popper) {
+          this.setState({ placement });
+        }
       },
       onUpdate: ({ placement }) => {
-        this.setState({ placement });
+        if (this.popper) {
+          this.setState({ placement });
+        }
       }
     });
   };
