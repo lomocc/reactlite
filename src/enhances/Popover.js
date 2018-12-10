@@ -48,12 +48,11 @@ function Arrow({ placement, arrowSize, ...props }) {
 
 export default class extends PureComponent {
   static defaultProps = {
-    autoResize: true,
     arrowSize: 12,
     placement: 'auto',
     shape: 'rounded',
-    borderColor: '#ddd',
-    backgroundColor: '#eee'
+    arrowStrokeColor: '#ddd',
+    arrowFillColor: '#eee'
   };
   popper = null;
 
@@ -83,9 +82,7 @@ export default class extends PureComponent {
   };
 
   onResize = () => {
-    if (this.props.autoResize) {
-      this.updatePopper();
-    }
+    this.updatePopper();
   };
 
   state = {
@@ -160,16 +157,15 @@ export default class extends PureComponent {
 
   render() {
     const {
-      autoResize,
       onClickOutside,
       placement,
       target,
       arrow,
       arrowSize,
+      arrowStrokeColor,
+      arrowFillColor,
 
       children,
-      borderColor,
-      backgroundColor,
       ...props
     } = this.props;
     const { placement: statePlacement } = this.state;
@@ -177,20 +173,14 @@ export default class extends PureComponent {
     return (
       statePlacement &&
       ReactDOM.createPortal(
-        <Box
-          borderWidth={1}
-          borderStyle="solid"
-          borderColor={borderColor}
-          backgroundColor={backgroundColor}
-          {...props}
-        >
+        <Box {...props}>
           {children}
           {arrow && (
             <Arrow
               arrowSize={arrowSize}
               placement={statePlacement}
-              stroke={borderColor}
-              fill={backgroundColor}
+              stroke={arrowStrokeColor}
+              fill={arrowFillColor}
             />
           )}
         </Box>,
