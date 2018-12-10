@@ -50,6 +50,8 @@ export default class extends PureComponent {
   static defaultProps = {
     arrowSize: 12,
     placement: 'auto',
+    flip: true,
+    modifiers: {},
     shape: 'rounded',
     arrowStrokeColor: '#ddd',
     arrowFillColor: '#eee'
@@ -104,7 +106,7 @@ export default class extends PureComponent {
   };
 
   updatePopper = () => {
-    const { placement, arrow } = this.props;
+    const { placement, modifiers, arrow, flip } = this.props;
     document.body.appendChild(this.el);
     let targetDOMNode = this.getTargetDOMNode() || document.body;
     this.popper = new Popper(targetDOMNode, this.el, {
@@ -114,7 +116,8 @@ export default class extends PureComponent {
         applyStyle: { enabled: true },
         arrow: { enabled: true, element: '[data-x-arrow]' },
         offset: { enabled: arrow, offset: `0, 10` },
-        flip: { enabled: true, padding: 16 }
+        flip: { enabled: flip, padding: 16 },
+        ...modifiers
       },
       onCreate: ({ placement, ...args }) => {
         if (this.popper) {
@@ -159,6 +162,8 @@ export default class extends PureComponent {
     const {
       onClickOutside,
       placement,
+      flip,
+      modifiers,
       target,
       arrow,
       arrowSize,
