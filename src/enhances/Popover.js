@@ -48,6 +48,7 @@ function Arrow({ placement, arrowSize, ...props }) {
 
 export default class extends PureComponent {
   static defaultProps = {
+    autoResize: true,
     arrowSize: 12,
     placement: 'auto',
     shape: 'rounded',
@@ -82,7 +83,9 @@ export default class extends PureComponent {
   };
 
   onResize = () => {
-    this.updatePopper();
+    if (this.props.autoResize) {
+      this.updatePopper();
+    }
   };
 
   state = {
@@ -157,6 +160,7 @@ export default class extends PureComponent {
 
   render() {
     const {
+      autoResize,
       onClickOutside,
       placement,
       target,
