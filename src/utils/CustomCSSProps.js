@@ -62,6 +62,14 @@ const CustomCSSProps = {
   marginLeft: value => ({
     marginLeft: factor4(value)
   }),
+  marginX: value => ({
+    marginLeft: factor4(value),
+    marginRight: factor4(value)
+  }),
+  marginY: value => ({
+    marginTop: factor4(value),
+    marginBottom: factor4(value)
+  }),
   // padding
   padding: value => ({
     padding: factor4(value)
