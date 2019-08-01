@@ -91,35 +91,44 @@ class Example extends Component {
 unmount self
 
 ```jsx
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import { Layer } from 'reactlite';
 
 class App extends Component {
   render() {
-    return <Layer.Placeholder />;
+    return (
+      <Fragment>
+        <Example />
+        <Modal.Provider />
+      </Fragment>
+    );
   }
 }
-class Modal extends Component {
-  unmount = () => {
-    this.props.unmount();
+class ModalComponent extends Component {
+  onOk = () => {
+    this.props.resolve('ok');
+  };
+  onCancel = () => {
+    this.props.resolve('cancel');
   };
   render() {
     return (
       <div>
-        <button onClick={this.unmount}>unmount self</button>
+        <button onClick={this.onOk}>OK</button>
+        <button onClick={this.onCancel}>CANCEL</button>
       </div>
     );
   }
 }
 class Example extends Component {
-  add = () => {
-    this.element = <Modal />;
-    Layer.mount(this.element);
+  show = async () => {
+    let result = await Modal.show(<ModalComponent />);
+    console.log(result);
   };
 
   render() {
-    return <button onClick={this.add}>add</button>;
+    return <button onClick={this.show}>SHOW</button>;
   }
 }
 ```

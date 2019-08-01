@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 /**
+ * fixme 待重构
+ *
  * 层组件
  *
  * 方式 1

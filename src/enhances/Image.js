@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from './primitives';
+import { Box } from '../primitives';
 
 const webpSupported = (function() {
   const canvas = document.createElement('canvas');
@@ -33,5 +33,6 @@ const Image = props => {
     />
   );
 };
+Image.webpSupported = webpSupported;
 
 export default Image;

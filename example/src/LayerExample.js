@@ -3,13 +3,12 @@
  */
 
 import React, { Component } from 'react';
-import { Box, Button, Layer } from 'reactlite';
+import { Box, Button, Modal } from 'reactlite';
 
-class Modal extends Component {
+class ModalComponent extends Component {
   removeSelf = () => {
     console.log('removeSelf');
-    this.props.unmount();
-    // Layer.removeElement(this);
+    this.props.resolve();
   };
   render() {
     let { title } = this.props;
@@ -31,22 +30,16 @@ class Modal extends Component {
     );
   }
 }
-export default class LayerExample extends Component {
-  add = () => {
-    this.element = <Modal title="定制 Modal title" />;
-    Layer.mount(this.element);
+export default class ModalExample extends Component {
+  show = () => {
+    Modal.show(<ModalComponent title="定制 Modal title" />);
   };
-  remove = () => {
-    Layer.unmount(this.element);
-  };
+
   render() {
     return (
       <Box>
-        <Layer>
-          <div>Layer Content</div>
-        </Layer>
-        <Button onClick={this.add}>add</Button>
-        <Button onClick={this.remove}>remove</Button>
+        <Modal.Provider />
+        <Button onClick={this.show}>show</Button>
       </Box>
     );
   }
