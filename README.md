@@ -36,6 +36,57 @@ https://codesandbox.io/s/7yqyq2q8x
 </Container>
 ```
 
+### Modal
+
+https://codesandbox.io/s/reactlite-example-3j5hw
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Modal } from 'reactlite';
+
+class ModalComponent extends React.Component {
+  onOk = () => {
+    this.props.resolve('ok');
+  };
+  onCancel = () => {
+    this.props.resolve('cancel');
+  };
+  render() {
+    return (
+      <div className="ModalComponent">
+        <button onClick={this.onOk}>OK</button>
+        <button onClick={this.onCancel}>CANCEL</button>
+      </div>
+    );
+  }
+}
+class Example extends React.Component {
+  show = async () => {
+    let result = await Modal.show(<ModalComponent />);
+    alert(result);
+  };
+
+  render() {
+    return <button onClick={this.show}>SHOW</button>;
+  }
+}
+
+function App() {
+  return (
+    <div className="App">
+      <h1>Hello CodeSandbox</h1>
+      <h2>Start editing to see some magic happen!</h2>
+      <Example />
+      <Modal.Provider />
+    </div>
+  );
+}
+
+const rootElement = document.getElementById('root');
+ReactDOM.render(<App />, rootElement);
+```
+
 ### Layer
 
 ```jsx
