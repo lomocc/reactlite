@@ -15,6 +15,13 @@
       {
         "useBuiltIns": true
       }
+    ],
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        // I tried with different combinations and without this object at all...
+        "regenerator": true // or true doesn't matter
+      }
     ]
   ]
 }
